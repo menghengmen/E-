@@ -1,0 +1,95 @@
+//
+//  MessageCell.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/24.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MessageCell.h"
+#import "MHCellFrameModel.h"
+#import "MHHoleMessageModel.h"
+#import "UIImage+ResizeImage.h"
+
+@interface MessageCell()
+{
+    UILabel *_timeLabel;
+    UILabel  * _nickNameLabel;
+    UIImageView *_iconView;
+    UIButton *_textView;
+   
+
+}
+@end
+
+@implementation MessageCell
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.backgroundView = nil;
+        self.backgroundColor = [UIColor clearColor];
+        
+       
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        _timeLabel = [[UILabel alloc] init];
+        _timeLabel.textAlignment = NSTextAlignmentCenter;
+        _timeLabel.textColor = [UIColor grayColor];
+        _timeLabel.font = [UIFont systemFontOfSize:14];
+        [self.contentView addSubview:_timeLabel];
+        
+       
+        _nickNameLabel = [UILabel new];
+        _nickNameLabel.textAlignment = NSTextAlignmentCenter;
+        _nickNameLabel.textColor = [UIColor grayColor];
+        _nickNameLabel.font = [UIFont systemFontOfSize:14];
+        [self.contentView addSubview:_nickNameLabel];
+        
+        
+        
+        _iconView = [[UIImageView alloc] init];
+        [self.contentView addSubview:_iconView];
+        
+        _textView = [UIButton buttonWithType:UIButtonTypeCustom];
+        _textView.titleLabel.numberOfLines = 0;
+        _textView.titleLabel.font = [UIFont systemFontOfSize:13];
+        _textView.contentEdgeInsets = UIEdgeInsetsMake(textPadding, textPadding, textPadding, textPadding);
+        [self.contentView addSubview:_textView];
+    }
+    return self;
+}
+
+- (void)setCellFrame:(MHCellFrameModel *)cellFrame
+{
+    NSString  * idStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"id"];
+
+    
+    _cellFrame = cellFrame;
+    MHHoleMessageModel *message = cellFrame.message;
+    
+    _timeLabel.frame = cellFrame.timeFrame;
+    _timeLabel.text = message.uthMsgDate;
+    
+    
+    _nickNameLabel.text = message.uiNickName;
+    _nickNameLabel.frame = cellFrame.nickNameFrame;
+    
+    
+    _iconView.frame = cellFrame.iconFrame;
+       NSString *iconStr = [idStr integerValue]==message.uthUiId ? @"me" : @"other";
+    _iconView.image = [UIImage imageNamed:iconStr];
+    
+    
+    
+    _textView.frame = cellFrame.textFrame;
+    NSString *textBg = message.type ? @"chat_recive_nor" : @"chat_send_nor";
+    UIColor *textColor = message.type ? [UIColor blackColor] : [UIColor whiteColor];
+    [_textView setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_textView setBackgroundImage:[UIImage resizeImage:textBg] forState:UIControlStateNormal];
+    _textView.backgroundColor = [UIColor colorWithHexString:@"#dbf0fe"];
+    
+    [_textView setTitle:message.uthMsg forState:UIControlStateNormal];
+}
+
+@end

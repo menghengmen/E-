@@ -1,0 +1,39 @@
+//
+//  acvicityInfo2TableViewCell.m
+//  XiongDaJinFu
+//
+//  Created by 小彬 on 17/7/22.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "acvicityInfo2TableViewCell.h"
+
+@implementation acvicityInfo2TableViewCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    self.desLabel.textColor = [UIColor colorWithHexString:@"#a6a6a6"];
+    
+    // Initialization code
+}
++ (instancetype)MHAcvicityInfo2TableViewCellWithTableView:(UITableView *)tableView{
+    
+    
+    static NSString *identity = @"acvicityInfo2TableViewCell";
+    
+    
+    acvicityInfo2TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identity];
+    if (!cell) {
+        cell = [[NSBundle mainBundle] loadNibNamed:@"acvicityInfo2TableViewCell" owner:nil options:nil][0];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    return cell;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

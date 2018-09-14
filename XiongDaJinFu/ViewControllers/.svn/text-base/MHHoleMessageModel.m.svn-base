@@ -1,0 +1,13 @@
+//
+//  MHHoleMessageModel.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/24.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHHoleMessageModel.h"
+
+@implementation MHHoleMessageModel
+
+@end

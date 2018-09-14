@@ -1,0 +1,292 @@
+//
+//  MHPlayVoiceViewController.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/9.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+
+
+
+#import "MHPlayVoiceViewController.h"
+#import <AVFoundation/AVFoundation.h>
+#import "MusicManager.h"
+
+#define WATER_HEIGHT 350
+@interface MHPlayVoiceViewController ()<AVAudioPlayerDelegate>
+{
+    
+    AVPlayerItem* _playerItem;
+    
+    
+}
+//做动画的btn
+@property (strong, nonatomic)  UIButton *animationBtn;
+@property (assign, nonatomic)  BOOL   is_Animation;
+
+@property (strong, nonatomic) IBOutlet UIView *bgImageView1;
+
+@property (strong, nonatomic)  UIView *waterView;
+@property (strong, nonatomic) IBOutlet UIImageView *bgImageView;
+@property (weak, nonatomic) IBOutlet UISlider *progressView;
+@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
+/// 音乐播放器
+@property (strong, nonatomic) AVAudioPlayer *player;
+@property (strong, nonatomic) AVPlayer *avPlayer;
+
+@property (weak, nonatomic) IBOutlet UILabel *progressLabel;
+@property (weak, nonatomic) IBOutlet UILabel *totalTimeLabel;
+
+// 自动更新播放进度的文字的定时器
+@property (strong, nonatomic) NSTimer *timer;
+
+@property  (nonatomic,assign)  BOOL  is_Playing;
+
+@property (weak, nonatomic) IBOutlet UIButton *playMusic;
+@property (strong, nonatomic) NSTimer *playTrendTimer;
+
+@end
+
+@implementation MHPlayVoiceViewController
+-(UIView*)waterView{
+    if (!_waterView) {
+        _waterView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, SCREENWIDTH, 467)];
+    }
+
+    return _waterView;
+}
+
+
+
+- (void)viewDidLoad {
+   
+    [self setUpNewNai:nil Title:@"播放音乐"];
+    self.is_Playing = NO;
+    if (self.type == PlayTypeMusic) {
+            self.coverImageView.layer.cornerRadius = 120;
+            self.coverImageView.clipsToBounds = YES;
+            [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:self.iamgUrl]];
+
+    }else if(self.type == PlayTypeBreath){
+        self.is_Animation = NO;
+        [self creatBreath];
+        self.bgImageView1.hidden = YES;
+    }
+  //音乐播放类型
+    if (self.trendType == PlayThirtyClock) {
+        // 创建定时器
+        NSTimer *timer = [NSTimer timerWithTimeInterval:30*60 target:self selector:@selector(playClock) userInfo:nil repeats:YES];
+        // 将定时器添加到runloop中，否则定时器不会启动
+        [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+        self.playTrendTimer =timer;
+    }else if(self.trendType == PlayThirtyStop){
+        // 创建定时器
+        NSTimer *timer = [NSTimer timerWithTimeInterval:30*60 target:self selector:@selector(playTest) userInfo:nil repeats:YES];
+        // 将定时器添加到runloop中，否则定时器不会启动
+        [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+        self.playTrendTimer =timer;
+    }
+    
+   
+    [super viewDidLoad];
+    [[MusicManager shareInfo] replaceItemWithUrlString:self.dpmFileUrlStr];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerAct) userInfo:nil repeats:YES];
+
+    
+    //初始化播放器
+   // [self initPlayer];
+    //更新播放进度的文字
+    //初始化动画
+    [self initAnimatiom];
+    //先不要让动画播放
+    [self pauseLayer:self.coverImageView.layer];
+    
+}
+
+//播放闹铃
+-(void)playClock{
+    NSString  * clockPath =[[ NSBundle mainBundle] pathForResource:@"dp_alarm" ofType:@"wav"];
+    
+    [[MusicManager shareInfo] playAndPause];
+
+   // [[MusicManager shareInfo] replaceItemWithLocalUrlString:clockPath];
+    self.avPlayer = [AVPlayer new];
+    AVPlayerItem *item = [[AVPlayerItem alloc] initWithURL:[NSURL fileURLWithPath:clockPath]];
+    [self.avPlayer replaceCurrentItemWithPlayerItem:item];
+    [self.avPlayer play];
+   
+    
+    [self.playTrendTimer invalidate];
+
+}
+-(void)playTest{
+    [[MusicManager shareInfo] playAndPause];
+    [self.playTrendTimer invalidate];
+
+
+
+}
+
+-(void)creatBreath{
+    [self.view addSubview:self.waterView];
+
+    //bounds.size.width animation
+    CALayer *bContainerLayer = [CALayer layer];
+    bContainerLayer.frame = CGRectMake((SCREENWIDTH-100)/2,44, 100, WATER_HEIGHT);
+    bContainerLayer.backgroundColor = [[UIColor colorWithHexString:@"#86cf63"] CGColor];
+    bContainerLayer.cornerRadius = 6;
+    [self.waterView.layer addSublayer:bContainerLayer];
+    
+    UIButton *bCoverLayer = [UIButton new];
+    self.animationBtn = bCoverLayer;
+    bCoverLayer.frame = CGRectMake(0, 0, 100, 0);
+    bCoverLayer.backgroundColor = [UIColor whiteColor] ;
+    bCoverLayer.layer.anchorPoint = CGPointMake(0.5, 0);
+    [bContainerLayer addSublayer:bCoverLayer.layer];
+    
+    CAKeyframeAnimation *bAnimation = [CAKeyframeAnimation animationWithKeyPath:@"bounds.size.height"];
+    bAnimation.values = @[@0,@(WATER_HEIGHT),@0];
+    
+    bAnimation.duration = 10.0f;
+    bAnimation.repeatCount = 10000;
+    bAnimation.removedOnCompletion = YES;
+    
+    [bCoverLayer.layer addAnimation:bAnimation forKey:nil];
+    // change model layer bounds
+    bCoverLayer.bounds = CGRectMake(0, 0, 100, WATER_HEIGHT);
+   
+}
+
+
+
+- (void)timerAct{
+    if ([MusicManager shareInfo].player.currentTime.timescale == 0 || [MusicManager shareInfo].player.currentItem.duration.timescale == 0) {
+        return;
+    }
+    // 获得音乐总时长
+    long long int totalTime = [MusicManager shareInfo].player.currentItem.duration.value / [MusicManager shareInfo].player.currentItem.duration.timescale;
+    // 获得当前时间
+    long long int currentTime = [MusicManager shareInfo].player.currentTime.value / [MusicManager shareInfo].player.currentTime.timescale;
+    self.progressLabel.text = [NSString stringWithFormat:@"%02lld:%02lld", currentTime / 60, currentTime % 60];
+    self.totalTimeLabel.text = [NSString stringWithFormat:@"%02lld:%02lld", totalTime / 60, totalTime % 60];
+    self.progressView.maximumValue = totalTime;
+    self.progressView.minimumValue = 0;
+    self.progressView.value = currentTime;
+    
+   if (self.progressView.value == totalTime) {
+       [[MusicManager shareInfo] replaceItemWithUrlString:self.dpmFileUrlStr];
+    }
+    
+}
+
+- (IBAction)progressChange:(UISlider *)sender {
+    [[MusicManager shareInfo] playerProgressWithProgressFloat:((UISlider*)sender).value];
+
+}
+- (void)pauseLayer:(CALayer*)layer
+{
+    CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
+    layer.speed = 0.0;
+    layer.timeOffset = pausedTime;
+}
+
+/**
+ *  继续layer上面的动画
+ *
+ *  @param layer 需要继续的layer
+ */
+- (void)resumeLayer:(CALayer*)layer
+{
+    CFTimeInterval pausedTime = [layer timeOffset];
+    layer.speed = 1.0;
+    layer.timeOffset = 0.0;
+    layer.beginTime = 0.0;
+    CFTimeInterval timeSincePause = [layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
+    layer.beginTime = timeSincePause;
+}
+
+/**
+ *  创建动画
+ */
+- (void)initAnimatiom{
+    //创建一个绕z轴选择的动画
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    //旋 转一周
+    animation.toValue = @(2*M_PI);
+    animation.repeatCount = MAXFLOAT;
+    animation.duration = 50.f;
+    [self.coverImageView.layer addAnimation:animation forKey:@"rotationAnimation"];
+    
+}
+
+
+- (IBAction)playbutton:(UIButton*)sender {
+   
+    if(self.type == PlayTypeBreath){
+        if (self.is_Animation==NO) {
+            [self pauseLayer:self.animationBtn.layer];
+            [self.playMusic setImage:[UIImage imageNamed:@"ypxq_icon1"] forState:UIControlStateNormal];
+            self.is_Animation = YES;
+
+        }else if (self.is_Animation ==YES) {
+            [self resumeLayer :self.animationBtn.layer];
+            [self.playMusic setImage:[UIImage imageNamed:@"ypxq_icon2"] forState:UIControlStateNormal];
+            self.is_Animation = NO;
+        }
+        
+       
+        [[MusicManager shareInfo] playAndPause];
+
+        return;
+    }
+    
+    if ([MusicManager shareInfo].isPlay == YES) {
+     [self.playMusic setImage:[UIImage imageNamed:@"ypxq_icon1"] forState:UIControlStateNormal];
+        //暂停封面图片的旋转
+        CAAnimation * anim = [self.coverImageView.layer animationForKey:@"rotationAnimation"];
+        if (anim) {
+            //暂停动画
+            [self pauseLayer:self.coverImageView.layer];
+        }
+ 
+    }
+   
+    
+    else{
+        [self.playMusic setImage:[UIImage imageNamed:@"ypxq_icon2"] forState:UIControlStateNormal];
+        //继续封面图片的旋转(动画可能在播放结束的时候被移除)
+        CAAnimation * anim = [self.coverImageView.layer animationForKey:@"rotationAnimation"];
+        if (anim == nil) {
+            [self initAnimatiom];
+        }else{
+            [self resumeLayer:self.coverImageView.layer];
+        }
+
+
+    
+    }
+    [[MusicManager shareInfo] playAndPause];
+    
+}
+- (IBAction)reset:(UIButton *)sender {
+    [[MusicManager shareInfo] playerProgressWithProgressFloat:0];
+    if ([MusicManager shareInfo].isPlay == NO) {
+        [self.playMusic setImage:[UIImage imageNamed:@"ypxq_icon2"] forState:UIControlStateNormal];
+        //继续封面图片的旋转(动画可能在播放结束的时候被移除)
+        CAAnimation * anim = [self.coverImageView.layer animationForKey:@"rotationAnimation"];
+        if (anim == nil) {
+            [self initAnimatiom];
+        }else{
+            [self resumeLayer:self.coverImageView.layer];
+        }
+    
+    }
+}
+
+
+- (IBAction)back:(UIButton *)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
+@end

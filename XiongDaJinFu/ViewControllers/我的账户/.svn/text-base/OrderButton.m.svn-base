@@ -1,0 +1,40 @@
+//
+//  OrderButton.m
+//  XiongDaJinFu
+//
+//  Created by 小彬 on 17/7/5.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "OrderButton.h"
+
+@implementation OrderButton
+
+//设置frame
+-(instancetype)initWithFrame:(CGRect)frame
+{
+    if (self=[super initWithFrame: frame]) {
+        self.titleLabel.textAlignment=NSTextAlignmentCenter;
+        self.backgroundColor=[UIColor greenColor];
+        
+        [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        //        self.titleLabel.textColor=[UIColor blueColor];
+        
+    };
+    
+    return self;
+}
+
+//更新子控件布局
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    CGFloat width=10;
+    CGFloat height=12.5;
+    
+    self.imageView.frame=CGRectMake(0, 0, width, width);
+    self.titleLabel.frame=CGRectMake(0, width, width, height-width);
+    //    self.titleLabel.textColor=[UIColor purpleColor];
+}
+
+@end

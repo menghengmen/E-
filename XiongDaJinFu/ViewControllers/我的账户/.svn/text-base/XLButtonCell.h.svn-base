@@ -1,0 +1,17 @@
+//
+//  XLButtonCell.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/6/26.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+
+#import <UIKit/UIKit.h>
+typedef void (^ReturnButton)(UIButton *button);
+@interface XLButtonCell : UITableViewCell
++(instancetype)buttonCell:(UITableView *)tableView;
+
+@property (nonatomic,copy)ReturnButton block;
+-(void)returnInfo:(ReturnButton )block;
+@end

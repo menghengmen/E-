@@ -1,0 +1,24 @@
+//
+//  MHChangeEmotionView.h
+//  XiongDaJinFu
+//
+//  Created by MengHeng on 17/7/20.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface MHChangeEmotionView : UIView
+@property (strong, nonatomic) IBOutlet UIImageView *mainImageView;
+
+@property (strong, nonatomic) IBOutlet UITextField *desTextfield;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+
+@property (strong, nonatomic) IBOutlet UILabel *secondLabel;
+@property (strong, nonatomic) IBOutlet UIButton *cancleBtn;
+
+@property (strong, nonatomic) IBOutlet UIButton *sureBtn;
+@property  (nonatomic,copy) void (^changeEmotionBlock)(NSDictionary * dict);
+@property  (nonatomic,assign)  NSUInteger   score;
+
+@end

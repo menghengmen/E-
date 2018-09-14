@@ -1,0 +1,40 @@
+//
+//  MHPaperModel.h
+//  XiongDaJinFu
+//
+//  Created by MengHeng on 17/7/25.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface MHPaperModel : NSObject
+@property   (nonatomic,copy)   NSString  *epName ;
+//当前试题下一题id,如果无则为0
+@property   (nonatomic,copy)   NSString  *eqIdNext ;
+//题干
+@property   (nonatomic,copy)   NSString  *eqName ;
+//当前题顺序号,比如:当前为第3题，这里值为3
+@property   (nonatomic,copy)   NSString  *eqOrder ;
+//试卷总题数,比如: 当前试卷有10题，这里值为10
+@property   (nonatomic,copy)   NSString  *qaTotleNum ;
+@property   (nonatomic,copy)   NSString  *upId;
+@property   (nonatomic,copy)   NSString  *upUuid;
+
+@property   (nonatomic,copy)   NSString  *ID;
+@property   (nonatomic,copy)   NSString  *etId;
+@property   (nonatomic,copy)   NSString  *epId;
+
+@property   (nonatomic,strong)   NSArray  *list_uea;
+
+
+@end
+@interface MHAnswerModel : NSObject
+//答案描叔
+@property   (nonatomic,copy)   NSString  *IDStr ;
+
+@property   (nonatomic,copy)   NSString  *eaDesc ;
+@property   (nonatomic,copy)   NSString  *eqId ;
+
+@property   (nonatomic,copy)   NSString  *userSelectStatus ;
+@end

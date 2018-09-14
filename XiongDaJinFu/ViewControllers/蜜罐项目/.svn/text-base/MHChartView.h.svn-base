@@ -1,0 +1,28 @@
+//
+//  MHChartView.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/11.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@protocol zhuBtnClickWithTagDelegate <NSObject>
+
+-(void)zhuBtnClickWithTag:(NSUInteger)tag;
+
+@end
+
+
+@interface MHChartView : UIView
+
+@property  (copy,nonatomic) NSString  * typeStr;
+
+@property   (nonatomic,weak)   id<zhuBtnClickWithTagDelegate>delegate;
+
+//画饼形图
+- (void)drawBingZhuangTu:(NSArray *)x_itemArr and:(NSArray *)y_itemArr;
+
+- (void)drawZhuZhuangTu:(NSArray *)x_itemArr and:(NSArray *)y_itemArr;
+@end

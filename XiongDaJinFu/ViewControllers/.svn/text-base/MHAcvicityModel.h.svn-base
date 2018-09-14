@@ -1,0 +1,23 @@
+//
+//  MHAcvicityModel.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/16.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface MHAcvicityModel : NSObject
+
+@property   (nonatomic,copy)   NSString * actiLogoUrl;
+@property   (nonatomic,copy)   NSString * actiLogoid;
+@property   (nonatomic,copy)   NSString * actiName;
+
+@property   (nonatomic,copy)   NSString * actiNum;
+@property   (nonatomic,copy)   NSString * uasuId;
+
+@property   (nonatomic,copy)   NSString * ID;
+
+
+@end

@@ -1,0 +1,17 @@
+//
+//  AcvicityInfo1TableViewCell.h
+//  XiongDaJinFu
+//
+//  Created by 小彬 on 17/7/22.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface AcvicityInfo1TableViewCell : UITableViewCell
++ (instancetype)MHAcvicityInfo1TableViewCellWithTableView:(UITableView *)tableView;
+@property (weak, nonatomic) IBOutlet UIImageView *mainImageView;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UIView *viewBG;
+
+@end

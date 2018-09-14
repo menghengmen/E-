@@ -1,0 +1,31 @@
+//
+//  MHExamBeginModel.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/23.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+//epDesc = "SAS能较准确地反映有焦虑倾向者的主观感受，方法简单，易于自我分析。";
+//epLogoUrl = "http://120.76.65.206:18080/ESMH/upLoad/20170330/exam/acf877a11179466d9e6e0cfc089d630d.jpg";
+//epLogoid = 6;
+//epName = "SAS焦虑自评量表_试卷";
+//epNum = 30;
+//epUuid = 782c70bb82c946f8a131d94c65c9ad95;
+//etId = 1;
+//etName = "自我测试";
+//id = 1;
+//loginToken = "customerInfo_B3868B0E8615F631096DF5CA014C7AFD";
+@interface MHExamBeginModel : NSObject
+
+@property   (nonatomic,copy)   NSString  *epLogoUrl ;
+@property   (nonatomic,copy)   NSString  *epName ;
+@property   (nonatomic,copy)   NSString  *etName ;
+@property   (nonatomic,copy)   NSString  *epDesc ;
+@property   (nonatomic,copy)   NSString  *epNum ;
+
+@property   (nonatomic,copy)   NSString  *ID ;
+
+
+@end

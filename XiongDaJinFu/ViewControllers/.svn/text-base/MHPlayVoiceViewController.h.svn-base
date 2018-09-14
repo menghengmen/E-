@@ -1,0 +1,36 @@
+//
+//  MHPlayVoiceViewController.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/9.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+//展示的类型，默认是自己好友最近的动态
+typedef NS_ENUM(NSInteger, PlayType)
+{
+    PlayTypeBreath = 0,     //呼吸
+    PlayTypeMusic ,     //音乐
+};
+//播放的类型
+typedef NS_ENUM(NSInteger, PlayTrendType)
+{
+    PlayCircle = 0,     //0为普通音乐循环播放
+    PlayThirtyClock ,     // 1午休音乐30分钟后闹铃
+    PlayThirtyStop  //2晚间音乐30分钟后结束
+};
+
+@interface MHPlayVoiceViewController : BaseViewController
+@property (nonatomic, assign) PlayType type;
+@property (nonatomic, assign) PlayTrendType trendType;
+
+@property   (nonatomic,copy)   NSString  * dpmFileUrlStr;
+@property   (nonatomic,copy)   NSString  * dpmNameStr;
+
+@property   (nonatomic,copy)   NSString  * iamgUrl;
+
+@property (weak, nonatomic) IBOutlet UILabel *dptNameLabel;
+
+@end

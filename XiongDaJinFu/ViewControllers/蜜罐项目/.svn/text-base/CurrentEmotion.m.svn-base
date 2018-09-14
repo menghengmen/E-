@@ -1,0 +1,16 @@
+//
+//  CurrentEmotion.m
+//  XiongDaJinFu
+//
+//  Created by MengHeng on 17/7/28.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "CurrentEmotion.h"
+
+@implementation CurrentEmotion
+@end
+@implementation BingChartView
+@end
+@implementation zhuChartView
+@end

@@ -1,0 +1,107 @@
+//
+//  MHCellFrameModel.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/24.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHCellFrameModel.h"
+#import "MHHoleMessageModel.h"
+#import "NSString+Extension.h"
+#define timeH 40
+#define padding 10
+#define iconW 40
+#define iconH 40
+
+#define nickNameW 100
+#define nickNameH 40
+
+
+#define textW 150
+
+
+
+
+@implementation MHCellFrameModel
+- (void)setMessage:(MHHoleMessageModel *)message
+{
+    NSString  * idStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"id"];
+
+    
+    
+    _message = message;
+    CGRect frame = [UIScreen mainScreen].bounds;
+    
+    //1.时间的Frame
+    if (message.showTime) {
+        CGFloat timeFrameX = 0;
+        CGFloat timeFrameY = 0;
+        CGFloat timeFrameW = frame.size.width;
+        CGFloat timeFrameH = timeH;
+        _timeFrame = CGRectMake(timeFrameX, timeFrameY, timeFrameW, timeFrameH);
+    }
+    
+   //昵称的Frame
+    CGFloat iconNameFrameX ;
+    //自己的
+    if ([idStr integerValue] ==message.uthUiId) {
+        iconNameFrameX=frame.size.width -nickNameW;;
+        
+    }else{
+        iconNameFrameX= padding ;
+        
+    }
+    
+    
+    CGFloat  iconNameFrameY = 0;
+    CGFloat iconNameFrameW = nickNameW;
+    CGFloat iconNameFrameH = nickNameH;
+    _nickNameFrame = CGRectMake(iconNameFrameX, iconNameFrameY, iconNameFrameW, iconNameFrameH);
+    
+    
+    
+    
+    //2.头像的Frame
+    CGFloat iconFrameX ;
+    //自己的
+    if ([idStr integerValue] ==message.uthUiId) {
+        iconFrameX=frame.size.width - padding - iconW;
+        
+    }else{
+        iconFrameX= padding ;
+        
+    }
+    
+    
+    
+    CGFloat iconFrameY = CGRectGetMaxY(_timeFrame);
+    CGFloat iconFrameW = iconW;
+    CGFloat iconFrameH = iconH;
+    _iconFrame = CGRectMake(iconFrameX, iconFrameY, iconFrameW, iconFrameH);
+    
+    //3.内容的Frame
+    CGSize textMaxSize = CGSizeMake(textW, MAXFLOAT);
+    CGSize textSize = [message.uthMsg sizeWithFont:[UIFont systemFontOfSize:14.0] maxSize:textMaxSize];
+    CGSize textRealSize = CGSizeMake(textSize.width + textPadding * 2, textSize.height + textPadding * 2);
+    CGFloat textFrameY = iconFrameY;
+    
+    
+   // CGFloat textFrameX = message.type ? (2 * padding + iconFrameW) : (frame.size.width - (padding * 2 + iconFrameW + textRealSize.width));
+  
+    CGFloat textFrameX;
+    if ([idStr integerValue] ==message.uthUiId) {
+        textFrameX=frame.size.width - (padding * 2 + iconFrameW + textRealSize.width);
+
+    }else{
+        textFrameX=(2 * padding + iconFrameW);
+
+    }
+    
+    _textFrame = (CGRect){textFrameX, textFrameY, textRealSize};
+    
+    //4.cell的高度
+    _cellHeght = MAX(CGRectGetMaxY(_iconFrame), CGRectGetMaxY(_textFrame)) + padding;
+}
+
+@end

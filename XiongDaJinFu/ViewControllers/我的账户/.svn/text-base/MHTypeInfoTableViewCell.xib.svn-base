@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MHTypeInfoTableViewCell" id="KGk-i7-Jjw" customClass="MHTypeInfoTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="390"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="390"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0020032841623151_b" translatesAutoresizingMaskIntoConstraints="NO" id="cx0-AR-VtQ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="250"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="250" id="DTM-oS-FoO"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SAS焦虑自评量表——试卷" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Bl-mA-U47">
+                        <rect key="frame" x="30" y="280" width="204" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="自我测试" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jW6-Tx-qW3">
+                        <rect key="frame" x="30" y="338" width="73.5" height="21.5"/>
+                        <color key="backgroundColor" red="0.37796574490000001" green="1" blue="0.62005353210000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="14人测试过" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Ki-SZ-Ekc">
+                        <rect key="frame" x="252.5" y="346.5" width="57.5" height="13.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="7Ki-SZ-Ekc" secondAttribute="trailing" constant="10" id="5kk-VC-pCu"/>
+                    <constraint firstItem="4Bl-mA-U47" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="30" id="6ms-dq-oIn"/>
+                    <constraint firstAttribute="trailing" secondItem="cx0-AR-VtQ" secondAttribute="trailing" id="BG9-sc-cfc"/>
+                    <constraint firstItem="jW6-Tx-qW3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="30" id="HDG-e3-mYy"/>
+                    <constraint firstItem="cx0-AR-VtQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="HLd-r1-anb"/>
+                    <constraint firstItem="4Bl-mA-U47" firstAttribute="top" secondItem="cx0-AR-VtQ" secondAttribute="bottom" constant="30" id="P01-fD-T0P"/>
+                    <constraint firstAttribute="bottom" secondItem="jW6-Tx-qW3" secondAttribute="bottom" constant="30" id="gG8-Od-KcC"/>
+                    <constraint firstItem="cx0-AR-VtQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="ir0-xk-uu0"/>
+                    <constraint firstAttribute="bottom" secondItem="7Ki-SZ-Ekc" secondAttribute="bottom" constant="30" id="tlf-Rh-nfg"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="examNameLabel" destination="4Bl-mA-U47" id="nqj-8z-fTv"/>
+                <outlet property="logoImageView" destination="cx0-AR-VtQ" id="grn-fm-X78"/>
+                <outlet property="numberLabel" destination="7Ki-SZ-Ekc" id="iTP-y2-w1O"/>
+                <outlet property="typeLabel" destination="jW6-Tx-qW3" id="mpu-S0-lH7"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="0020032841623151_b" width="1024" height="563"/>
+    </resources>
+</document>

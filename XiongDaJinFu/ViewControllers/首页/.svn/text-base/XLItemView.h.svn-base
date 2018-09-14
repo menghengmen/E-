@@ -1,0 +1,27 @@
+//
+//  XLItemView.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/6/26.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@class XLItemView;
+
+@protocol XLItemViewDelegate <NSObject>
+
+@optional
+- (void)itemViewBtnClickWithitemView:(XLItemView *)itemView tag:(NSInteger)tag name:(NSString *)buttonName;
+
+@end
+
+@interface XLItemView : UIView
+
+@property (nonatomic, strong) NSArray *nameArray;
+@property (nonatomic, strong) NSArray *imageArray;
+
+@property (nonatomic, weak) id<XLItemViewDelegate> delegate;
+
+@end

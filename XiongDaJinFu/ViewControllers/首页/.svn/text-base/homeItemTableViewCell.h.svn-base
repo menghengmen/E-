@@ -1,0 +1,20 @@
+//
+//  homeItemTableViewCell.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/6/26.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "XLItemView.h"
+
+@protocol itemCellDelegate <NSObject>
+
+
+@end
+
+@interface homeItemTableViewCell : UITableViewCell
++ (instancetype)personInfoCellWithTableView:(UITableView *)tableView;
+
+@end

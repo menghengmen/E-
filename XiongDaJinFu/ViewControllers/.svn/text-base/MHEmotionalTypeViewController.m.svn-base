@@ -1,0 +1,150 @@
+//
+//  MHEmotionalTypeViewController.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/8.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHEmotionalTypeViewController.h"
+#import "EmotionalTableViewCell.h"
+#import "MHEmotionalTypeTableViewCell.h"
+#import "MHPlayVoiceViewController.h"
+#import "MusicTypeList.h"
+@interface MHEmotionalTypeViewController ()<UITableViewDataSource,UITableViewDelegate>
+@property (nonatomic,strong)  NSMutableArray  * dataArray;
+@property (nonatomic,strong)  UITableView  * typeTableView;
+
+@end
+
+@implementation MHEmotionalTypeViewController
+
+- (NSMutableArray*)dataArray{
+    
+    if (!_dataArray) {
+        _dataArray = [[NSMutableArray  alloc] init];
+    }
+    
+    return _dataArray;
+}
+
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+   
+    [self getData];
+    [self setUpNewNai:nil Title:@"提升情绪"];
+    UITableView  * tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT)];
+    tableView.backgroundColor =[UIColor colorWithHexString:@"#eff3f6"];
+    tableView.tableFooterView = [UIView new];
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    tableView.sectionHeaderHeight = 300;
+    self.typeTableView = tableView;
+    
+    UIImageView  * headerview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, (236+168+20 )/2)];
+    headerview.backgroundColor =[ UIColor colorWithHexString:@"#fefefe"];
+    
+    
+    UIImageView  * view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 236/2)];
+    
+    view.contentMode = UIViewContentModeScaleAspectFill;
+    
+    [view sd_setImageWithURL:[NSURL URLWithString:self.imagUrlStr]];
+    [headerview addSubview:view];
+    
+    
+    UILabel  * label = [UILabel new];
+     label.text = @"适应的音乐对大脑的自律神经产生作用，活络血夜循环，调节身心";
+    label.numberOfLines = 0;
+    label.layer.borderColor = [UIColor grayColor] .CGColor;
+    label.layer.borderWidth =2;
+    label.textColor = [UIColor colorWithHexString:@"#888888"];
+    [headerview addSubview:label];
+    [label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(view.mas_bottom).offset(12);
+        make.left.equalTo(view.mas_left).offset(10);
+        make.right.equalTo(view.mas_right).offset(-10);
+        make.height.equalTo(@(116/2));
+    }];
+    
+    UIView  * bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, (236+168)/2, SCREENWIDTH, 10)];
+    bottomView.backgroundColor =[UIColor colorWithHexString:@"#f2f1f9"];
+    [headerview addSubview:bottomView];
+    
+    
+    tableView.tableHeaderView = headerview;
+    [self.view addSubview:tableView];
+
+
+
+}
+#pragma mark UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    
+    return self.dataArray.count;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static  NSString  * idStr = @"MHEmotionalTypeTableViewCell";
+    MHEmotionalTypeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:idStr ];
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"MHEmotionalTypeTableViewCell" owner:self options:nil] lastObject];
+        
+    }
+   
+    cell.model = self.dataArray[indexPath.row];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+    
+    
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    return 118/2;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+   
+    MusicTypeList  * model =self.dataArray[indexPath.row];
+    MHPlayVoiceViewController  * vc = [MHPlayVoiceViewController new];
+    vc.dpmFileUrlStr = model.dpmFileUrl;
+    vc.dpmNameStr = model.dpmName;
+    vc.iamgUrl = self.imagUrlStr;
+    vc.type = PlayTypeMusic;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+-(void)getData{
+    
+    NSString  * tokenStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"];
+    NSString  * strUrl = [NSString stringWithFormat:@"%@?loginToken=%@&dptId=%@",URL_Music_Type_List,tokenStr,self.pdtId];
+    [[NetworkClient sharedClient] POST:strUrl dict:@{@"loginToken":tokenStr,@"dptId":self.pdtId} succeed:^(id data) {
+        NSLog(@"%@",data);
+        NSArray  * dataArr = (NSArray*)data;
+        [dataArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            MusicTypeList  * MusicModel = [MusicTypeList mj_objectWithKeyValues:(NSDictionary*)obj];
+            [self.dataArray addObject:MusicModel];
+        }];
+            [self.typeTableView reloadData];
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+    }];
+    
+
+  [[NetworkClient sharedClient] POST:[NSString stringWithFormat:@"%@?loginToken=%@&id=29",URL_Music_Breathing_Assissant,tokenStr] dict:nil succeed:^(id data) {
+      NSLog(@"%@",data);
+  } failure:^(NSError *error) {
+      NSLog(@"%@",error);
+
+  }];
+
+}
+
+@end

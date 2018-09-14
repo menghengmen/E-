@@ -1,0 +1,14 @@
+//
+//  Answer1TableViewCell.h
+//  答题界面
+//
+//  Created by 哈哈 on 2017/7/8.
+//  Copyright © 2017年 哈哈. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface Answer1TableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *answerLabel;
+
+@end

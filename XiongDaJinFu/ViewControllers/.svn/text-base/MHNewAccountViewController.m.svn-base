@@ -1,0 +1,42 @@
+//
+//  MHNewAccountViewController.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/9/24.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHNewAccountViewController.h"
+
+@interface MHNewAccountViewController ()
+@property (strong, nonatomic) IBOutlet UIImageView *codeImageView;
+
+@end
+
+@implementation MHNewAccountViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setUpNewNai:@"返回" Title:@"试用账号列表"];
+
+    [self.codeImageView sd_setImageWithURL:[NSURL URLWithString:@"http://120.76.65.206:18080/ESMHS/app/qrCodeImgGetDemo.png"]];
+    
+    // Do any additional setup after loading the view from its nib.
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

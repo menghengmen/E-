@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MHThemeTableViewCell" rowHeight="208" id="KGk-i7-Jjw" customClass="MHThemeTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="209"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="208"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0020032841623151_b" translatesAutoresizingMaskIntoConstraints="NO" id="zXC-cx-Cfa">
+                        <rect key="frame" x="11" y="9" width="298" height="199.5"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="6"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vsj-zm-LNB">
+                        <rect key="frame" x="40" y="30" width="0.0" height="0.0"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="zXC-cx-Cfa" secondAttribute="trailing" constant="11" id="5kn-kB-eGo"/>
+                    <constraint firstAttribute="bottom" secondItem="zXC-cx-Cfa" secondAttribute="bottom" id="Tpr-dg-WnN"/>
+                    <constraint firstItem="zXC-cx-Cfa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="11" id="VMH-At-Ra7"/>
+                    <constraint firstItem="Vsj-zm-LNB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="30" id="WJp-2o-KfE"/>
+                    <constraint firstItem="zXC-cx-Cfa" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="9" id="bZM-ld-Md5"/>
+                    <constraint firstItem="Vsj-zm-LNB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="40" id="n3Q-FV-I6I"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="etNameLabel" destination="Vsj-zm-LNB" id="mff-IS-euS"/>
+                <outlet property="mainImageView" destination="zXC-cx-Cfa" id="8u7-LV-GN5"/>
+            </connections>
+            <point key="canvasLocation" x="30" y="37"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="0020032841623151_b" width="1024" height="563"/>
+    </resources>
+</document>

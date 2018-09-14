@@ -1,0 +1,17 @@
+//
+//  acvicityInfo3TableViewCell.h
+//  XiongDaJinFu
+//
+//  Created by 小彬 on 17/7/22.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface acvicityInfo3TableViewCell : UITableViewCell
++ (instancetype)MHAcvicityInfo3TableViewCellWithTableView:(UITableView *)tableView;
+@property (weak, nonatomic) IBOutlet UILabel *baoMingDate;
+@property (weak, nonatomic) IBOutlet UILabel *acvicityDate;
+@property (weak, nonatomic) IBOutlet UILabel *acvicityTime;
+
+@end

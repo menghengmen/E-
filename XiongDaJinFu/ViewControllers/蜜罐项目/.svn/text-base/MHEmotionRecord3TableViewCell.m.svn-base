@@ -1,0 +1,64 @@
+//
+//  MHEmotionRecord3TableViewCell.m
+//  XiongDaJinFu
+//
+//  Created by MengHeng on 17/7/26.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHEmotionRecord3TableViewCell.h"
+@interface MHEmotionRecord3TableViewCell()
+
+@end
+
+@implementation MHEmotionRecord3TableViewCell
+
+-(MHChartView*)chartView{
+    if (!_chartView) {
+        _chartView = [[MHChartView alloc] initWithFrame:CGRectMake(0, 0, SCREENHEIGHT, 300)];
+        
+        _chartView.backgroundColor = [UIColor whiteColor];
+    
+        
+    }
+    
+    return _chartView;
+}
+
+
++ (instancetype)MHEmotionRecord3WithTableView:(UITableView *)tableView{
+    static NSString *identity = @"MHEmotionRecord3TableViewCell";
+    
+    
+    MHEmotionRecord3TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identity];
+    if (!cell) {
+        cell = [[NSBundle mainBundle] loadNibNamed:@"MHEmotionRecord3TableViewCell" owner:nil options:nil][0];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    
+    
+    
+    return cell;
+    
+}
+
+
+
+- (void)awakeFromNib {
+  
+    self.seporView.backgroundColor = [UIColor colorWithHexString:@"#cfcfcf"];
+    [super awakeFromNib];
+  
+}
+- (IBAction)changeBingZhuangBtn:(UIButton *)sender {
+
+    [self.delegate ZhubtnClickWithTitle:sender.titleLabel.text];
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

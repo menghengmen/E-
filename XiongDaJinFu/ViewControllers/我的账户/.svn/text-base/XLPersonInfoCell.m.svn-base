@@ -1,0 +1,50 @@
+//
+//  XLPersonInfoCell.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/6/26.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+
+#import "XLPersonInfoCell.h"
+
+@interface XLPersonInfoCell ()
+
+
+
+
+@end
+
+@implementation XLPersonInfoCell
+
+- (void)awakeFromNib {
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+//-(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+//{
+//}
++(instancetype)personInfoCell:(UITableView *)tableView
+{
+ static NSString *identify = @"XLPersonInfoCell";
+    XLPersonInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
+    if (!cell) {
+        cell = [[[NSBundle mainBundle]loadNibNamed:@"XLPersonInfoCell" owner:nil options:nil]lastObject];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+      
+    }
+    return cell;
+}
+- (IBAction)register:(UIButton *)sender {
+
+    [self.delegate click];
+
+}
+@end

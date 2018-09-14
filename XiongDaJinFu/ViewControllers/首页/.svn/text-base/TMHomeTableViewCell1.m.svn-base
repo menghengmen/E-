@@ -1,0 +1,33 @@
+//
+//  TMHomeTableViewCell1.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/29.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "TMHomeTableViewCell1.h"
+
+@implementation TMHomeTableViewCell1
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    self.typeLabel.textColor = [UIColor colorWithHexString:@"5eb4fa"];
+    self.todayEmotionLabel.textColor =[UIColor colorWithHexString:@"#333333"];
+    self.dateStrLabel.textColor =[UIColor colorWithHexString:@"#666666"];
+    self.seporLabel.backgroundColor =[UIColor colorWithHexString:@"#e9e9e9"];
+    self.typeLabel.textColor =[UIColor colorWithHexString:@"#0c94f5"];
+    self.typeLabel.font =[UIFont systemFontOfSize:26];
+    self.descriLabel.textColor = [UIColor colorWithHexString:@"#666666"];
+    self.descriLabel.font =[UIFont systemFontOfSize:15];
+
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

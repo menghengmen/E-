@@ -1,0 +1,57 @@
+//
+//  CurrentEmotion.h
+//  XiongDaJinFu
+//
+//  Created by MengHeng on 17/7/28.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+//id = 120;
+//loginToken = "customerInfo_F0EF692F78863AC8F3ABEDCFD83A79F0";
+//uiId = 2;
+//umiDate = "2017-07-28";
+//umiOpStatus = 1;
+//umiTag = "平静";
+//umiUuid = 1b7e9b2d1284492ebaafe83fb3fb8d1e;
+//umiVal = 75;
+
+
+
+@interface CurrentEmotion : NSObject
+@property   (nonatomic,copy)   NSString * umiDate;
+@property   (nonatomic,copy)   NSString * umiOpStatus;
+@property   (nonatomic,copy)   NSString * umiTag;
+@property   (nonatomic,copy)   NSString * umiUuid;
+@property   (nonatomic,copy)   NSString * umiVal;
+
+@end
+
+
+@interface BingChartView : NSObject
+
+@property   (nonatomic,copy)   NSString * umiDate;
+@property   (nonatomic,copy)   NSString * umiLeve100Num;
+@property   (nonatomic,copy)   NSString * umiLeve80Num;
+@property   (nonatomic,copy)   NSString * umiLeve20Num;
+
+@property   (nonatomic,copy)   NSString * umiLeve30Num;
+@property   (nonatomic,copy)   NSString * umiLeve40Num;
+@property   (nonatomic,copy)   NSString * umiLeve50Num;
+@property   (nonatomic,copy)   NSString * umiLeve60Num;
+@property   (nonatomic,copy)   NSString * umiLeve70Num;
+@property   (nonatomic,copy)   NSString * umiLeve90Num;
+
+@property   (nonatomic,copy)   NSString * umiVal30;
+@property   (nonatomic,copy)   NSString * umiVal365;
+@end
+
+
+@interface zhuChartView : NSObject
+@property   (nonatomic,copy)   NSString * uiId;
+@property   (nonatomic,copy)   NSString * umiDate;
+@property   (nonatomic,copy)   NSString * umiTag;
+@property   (nonatomic,copy)   NSString * umiVal;
+
+@end

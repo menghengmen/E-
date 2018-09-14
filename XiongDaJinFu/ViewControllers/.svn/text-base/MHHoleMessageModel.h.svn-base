@@ -1,0 +1,39 @@
+//
+//  MHHoleMessageModel.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/24.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+typedef enum {
+    kMessageModelTypeOther,
+    kMessageModelTypeMe
+} MessageModelType;
+
+
+@interface MHHoleMessageModel : NSObject
+
+@property (nonatomic, assign) BOOL showTime;
+
+@property (nonatomic, assign) MessageModelType type;
+
+//消息用户昵称
+@property   (nonatomic,copy)   NSString  *uiNickName ;
+//当前用户ID
+@property   (nonatomic,copy)   NSString  *uiId ;
+//消息用户ID
+@property   (nonatomic,assign)   NSUInteger  uthUiId ;
+
+@property   (nonatomic,copy)   NSString  *uiPhone ;
+@property   (nonatomic,copy)   NSString  *uthId ;
+
+//消息内容
+@property   (nonatomic,copy)   NSString  *uthMsg ;
+//消息发送时间
+@property   (nonatomic,copy)   NSString  *uthMsgDate ;
+
+
+
+@end

@@ -1,0 +1,26 @@
+//
+//  HoneyBottleViewController.h
+//  XiongDaJinFu
+//
+//  Created by 码动 on 16/10/13.
+//  Copyright © 2016年 digirun. All rights reserved.
+//
+
+#import "BaseViewController.h"
+
+
+
+typedef NS_ENUM(NSInteger, ChartType){
+    CHART_TYPE_BING = 0,  //饼状图
+    CHART_TYPE_ZHU,  //柱状图
+};
+
+@interface HoneyBottleViewController : BaseViewController
+@property   (nonatomic,assign)   ChartType  chartType;
+
+
+
+@property(nonatomic,assign)NSInteger HoneyBottleViewControllerChartType;
+@property(nonatomic,copy  )NSString  *receivedChartType;
+
+@end

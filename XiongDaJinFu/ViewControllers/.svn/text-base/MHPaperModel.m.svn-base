@@ -1,0 +1,30 @@
+//
+//  MHPaperModel.m
+//  XiongDaJinFu
+//
+//  Created by MengHeng on 17/7/25.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHPaperModel.h"
+
+@implementation MHPaperModel
++(NSDictionary*)mj_replacedKeyFromPropertyName{
+
+    return @{@"ID":@"id"};
+
+}
+
+
+@end
+
+
+@implementation MHAnswerModel
++(NSDictionary*)mj_replacedKeyFromPropertyName{
+    
+    return @{@"IDStr":@"id"};
+    
+}
+
+
+@end

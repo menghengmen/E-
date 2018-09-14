@@ -1,0 +1,94 @@
+//
+//  MHChangeEmotionView.m
+//  XiongDaJinFu
+//
+//  Created by MengHeng on 17/7/20.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHChangeEmotionView.h"
+
+
+@implementation MHChangeEmotionView
+
+-(void)awakeFromNib{
+    [super awakeFromNib];
+    
+//    [self.cancleBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+//    self.sureBtn.backgroundColor = [UIColor blackColor];
+}
+- (IBAction)chooseEmotion:(UIButton *)sender {
+    switch (sender.tag) {
+        case 10086:
+            self.score = 100;
+            self.mainImageView.image =[UIImage imageNamed:@"test_moodrecord_100"];
+            break;
+        case 10087:
+            self.score = 90;
+            self.mainImageView.image =[UIImage imageNamed:@"test_moodrecord_90"];
+
+            break;
+        case 10088:
+            self.score = 80;
+            self.mainImageView.image =[UIImage imageNamed:@"test_moodrecord_80"];
+
+            break;
+        case 10089:
+            self.score = 70;
+            self.mainImageView.image =[UIImage imageNamed:@"test_moodrecord_70"];
+
+            break;
+        case 10090:
+            self.score = 60;
+            self.mainImageView.image =[UIImage imageNamed:@"test_moodrecord_60"];
+
+            break;
+        case 10091:
+            self.score = 50;
+            self.mainImageView.image =[UIImage imageNamed:@"test_moodrecord_50"];
+
+            break;
+        case 10092:
+            self.score = 40;
+            self.mainImageView.image =[UIImage imageNamed:@"test_moodrecord_40"];
+            break;
+
+        case 10093:
+            self.score = 30;
+            self.mainImageView.image =[UIImage imageNamed:@"test_moodrecord_30"];
+            break;
+
+        case 10094:
+            self.score = 20;
+            self.mainImageView.image =[UIImage imageNamed:@"test_moodrecord_20"];
+            break;
+        default:
+            break;
+    }
+    for (int i = 0 ; i < 9 ; i ++) {
+        if (sender.tag == 10086+i) {
+            sender.selected = YES;
+             [sender setImage:[UIImage imageNamed:@"tc_xz_pre"] forState:UIControlStateNormal];
+            continue;
+        }
+        
+        UIButton  * btn =(UIButton*) [self viewWithTag:10086+i];
+        btn.selected = NO;
+         [btn setImage:[UIImage imageNamed:@"tc_xz"] forState:UIControlStateNormal];
+    }
+
+}
+- (IBAction)SubmitEmotion:(UIButton *)sender {
+    [self.desTextfield resignFirstResponder];
+   
+    NSMutableDictionary  * submitDict = [NSMutableDictionary dictionary];
+    submitDict[@"umiTag"] = self.desTextfield.text;
+    submitDict[@"umiVal"] =@(self.score ) ;
+    if (self.changeEmotionBlock) {
+        self.changeEmotionBlock(submitDict);
+    }
+
+ 
+}
+
+@end

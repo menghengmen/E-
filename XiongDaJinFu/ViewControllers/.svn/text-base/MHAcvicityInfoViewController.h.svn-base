@@ -1,0 +1,15 @@
+//
+//  MHAcvicityInfoViewController.h
+//  XiongDaJinFu
+//
+//  Created by 小彬 on 17/7/22.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "BaseViewController.h"
+
+@interface MHAcvicityInfoViewController : BaseViewController
+
+
+@property(nonatomic,copy)  NSString  * idStr;
+@end

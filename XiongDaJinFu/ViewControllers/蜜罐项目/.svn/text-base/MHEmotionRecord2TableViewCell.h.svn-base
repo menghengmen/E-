@@ -1,0 +1,31 @@
+//
+//  MHEmotionRecord2TableViewCell.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/11.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "MHChartView.h"
+
+
+
+@protocol BtnClickDelelgate <NSObject>
+
+-(void)btnClickWithTitle:(NSString*)title;
+
+@end
+
+
+@interface MHEmotionRecord2TableViewCell : UITableViewCell
+@property (strong, nonatomic) IBOutlet UIView *seporerView;
+@property (strong, nonatomic) IBOutlet UILabel *recentLabel;
++ (instancetype)MHEmotionRecord2WithTableView:(UITableView *)tableView;
+
+@property  (weak,nonatomic)  id<BtnClickDelelgate>delegate;
+
+@property (weak, nonatomic) IBOutlet UIView *chartView;
+@property(nonatomic,strong)  MHChartView  * chartView1;
+
+@end

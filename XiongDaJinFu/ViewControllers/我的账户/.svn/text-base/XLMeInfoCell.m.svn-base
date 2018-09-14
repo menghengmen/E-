@@ -1,0 +1,54 @@
+//
+//  XLMeInfoCell.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/6/26.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+
+#import "XLMeInfoCell.h"
+
+@implementation XLMeInfoCell
+
+- (void)awakeFromNib {
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+-(void)layoutSubviews
+{
+
+    [super layoutSubviews];
+    
+    CGRect rect = self.contentView.bounds;
+    
+    self.imageView.frame =CGRectMake(rect.origin.x+10,10,rect.size.height*0.5,rect.size.height*0.5);
+    
+    self.imageView.contentMode =UIViewContentModeScaleAspectFit;
+   
+    self.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+ 
+    
+    
+
+}
++(instancetype)meInfoCell:(UITableView *)tableView
+{
+    static NSString *indentify = @"XLMeInfiCell";
+    XLMeInfoCell *cell =[tableView dequeueReusableCellWithIdentifier:indentify];
+    
+    if (!cell) {
+            cell = [[XLMeInfoCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:indentify];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
+    return cell;
+}
+
+@end

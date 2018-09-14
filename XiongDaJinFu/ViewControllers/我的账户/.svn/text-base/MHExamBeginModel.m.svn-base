@@ -1,0 +1,17 @@
+//
+//  MHExamBeginModel.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/23.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHExamBeginModel.h"
+
+@implementation MHExamBeginModel
++(NSDictionary*)mj_replacedKeyFromPropertyName{
+
+    return @{@"ID":@"id"};
+
+}
+@end

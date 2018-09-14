@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="XLAboutViewController">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="goods" translatesAutoresizingMaskIntoConstraints="NO" id="5nG-2v-P6t">
+                    <rect key="frame" x="148" y="84" width="80" height="80"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="I4T-Hf-9bB"/>
+                        <constraint firstAttribute="height" constant="80" id="Kee-Ub-dhN"/>
+                    </constraints>
+                </imageView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="RlK-rd-aaU">
+                    <rect key="frame" x="20" y="204" width="335" height="427"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="427" id="rlH-8f-o5M"/>
+                    </constraints>
+                    <mutableString key="text">南京博鼎资讯科技有限公司成立于2002年，是国内最早从事体育大数据，“互联网 + 全民健身”，“互联网+ 体育+ 生态”的民营高新技术企业，公司多年来注重自有产权体系的平台研发，江苏省体育类第一个省级企业研究生工作站，江苏省双软企业，江苏省省级优秀企业（双优），南京市321科技领军型企业，作为江苏省和南京市两级软件工程技术中心，公司具备很强的研发能力，形成了体系化系列化的知识产权体系和面向全国的一站式平台。                                                                         联系电话：025-52265563 025-52265453   </mutableString>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="RlK-rd-aaU" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="8ns-N0-JKD"/>
+                <constraint firstItem="RlK-rd-aaU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="UGl-Zr-MKI"/>
+                <constraint firstAttribute="trailing" secondItem="RlK-rd-aaU" secondAttribute="trailing" constant="20" id="jsE-8K-Jnb"/>
+                <constraint firstItem="RlK-rd-aaU" firstAttribute="top" secondItem="5nG-2v-P6t" secondAttribute="bottom" constant="40" id="q8T-8E-CDc"/>
+                <constraint firstItem="5nG-2v-P6t" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="84" id="qyt-As-Jdn"/>
+                <constraint firstItem="5nG-2v-P6t" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="vbK-hg-701"/>
+            </constraints>
+        </view>
+    </objects>
+    <resources>
+        <image name="goods" width="80" height="80"/>
+    </resources>
+</document>

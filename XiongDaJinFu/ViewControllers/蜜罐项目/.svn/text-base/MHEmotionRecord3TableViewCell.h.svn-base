@@ -1,0 +1,33 @@
+//
+//  MHEmotionRecord3TableViewCell.h
+//  XiongDaJinFu
+//
+//  Created by MengHeng on 17/7/26.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "MHChartView.h"
+
+
+@protocol ZhuBtnClickDelelgate <NSObject>
+
+-(void)ZhubtnClickWithTitle:(NSString*)title;
+
+@end
+
+
+@interface MHEmotionRecord3TableViewCell : UITableViewCell
+@property (strong, nonatomic) IBOutlet UIView *seporView;
+@property (strong, nonatomic) IBOutlet UIView *  zhuZhuangTuView;
+
+@property(nonatomic,strong)  MHChartView  * chartView;
+
++ (instancetype)MHEmotionRecord3WithTableView:(UITableView *)tableView;
+
+
+@property   (nonatomic,weak)   id<ZhuBtnClickDelelgate>delegate;
+
+
+
+@end

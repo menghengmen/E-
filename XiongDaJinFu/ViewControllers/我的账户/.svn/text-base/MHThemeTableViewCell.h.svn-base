@@ -1,0 +1,17 @@
+//
+//  MHThemeTableViewCell.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/9.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "MHExamThemeList.h"
+@interface MHThemeTableViewCell : UITableViewCell
+@property   (nonatomic,strong)   MHExamThemeList  * MODEL;
+@property (strong, nonatomic) IBOutlet UIImageView *mainImageView;
+@property (strong, nonatomic) IBOutlet UILabel *DescLabel;
+
+@property (strong, nonatomic) IBOutlet UILabel *etNameLabel;
+@end

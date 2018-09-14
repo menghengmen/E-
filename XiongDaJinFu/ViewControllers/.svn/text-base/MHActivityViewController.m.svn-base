@@ -1,0 +1,406 @@
+//
+//  MHActivityViewController.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/8.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHActivityViewController.h"
+#import "MHThemeTableViewCell.h"
+#import "MHTestTypeTableViewCell.h"
+
+#import "MHAcvicityModel.h"
+#import "MHAcvicityTableViewCell.h"
+#import "MHAcvicityInfoViewController.h"
+
+#import "MHHoleMessageModel.h"
+#import "MHCellFrameModel.h"
+#import "MessageCell.h"
+#define kTag90 90
+
+
+#define kToolBarH 64
+#define kTextFieldH 30
+
+
+@interface MHActivityViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
+@property (nonatomic, strong) UIView *greenView;
+@property (nonatomic, strong) NSMutableArray *btnArrayM;
+@property (nonatomic,strong)  NSMutableArray  * dataArray;
+@property (nonatomic,strong)  UITextField  * textField;
+
+@end
+
+@implementation MHActivityViewController
+{
+    UITableView *_tableView;
+    int  type;
+
+   //消息实体
+    NSMutableArray *_cellFrameDatas;
+}
+
+- (NSMutableArray*)dataArray{
+    
+    if (!_dataArray) {
+        _dataArray = [[NSMutableArray  alloc] init];
+    }
+    
+    return _dataArray;
+}
+
+
+
+- (NSMutableArray *)btnArrayM
+{
+    if (!_btnArrayM) {
+        _btnArrayM = [NSMutableArray array];
+    }
+    return _btnArrayM;
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBar.hidden = YES;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    [self getDataWithType:0];
+    type = kTag90;
+    
+    [self setUpNewNai:nil Title:@"活动"];
+
+    [self setUpUI];
+}
+
+
+//- (BOOL)prefersStatusBarHidden
+//{
+//    return YES;
+//}
+
+
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+
+    NSString  * tokenStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"];
+    NSString  * idStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"id"];
+    
+    [[NetworkClient sharedClient] POST:[NSString stringWithFormat:@"%@?loginToken=%@&uiId=%@&uthMsg=%@",URL_Tree_Hole_Add_Msg,tokenStr,idStr,textField.text] dict:nil succeed:^(id data) {
+        NSLog(@"新增消息成功%@",data);
+        NSArray  * dataArr = (NSArray*)data;
+        if (dataArr.count>0) {
+            [self getHoleMessageData];
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+
+    }];
+    
+    
+    
+    return YES;
+
+
+}
+
+/**
+ *  键盘发生改变执行
+ */
+- (void)keyboardWillChange:(NSNotification *)note
+{
+    NSLog(@"%@", note.userInfo);
+    NSDictionary *userInfo = note.userInfo;
+    CGFloat duration = [userInfo[@"UIKeyboardAnimationDurationUserInfoKey"] doubleValue];
+    
+    CGRect keyFrame = [userInfo[@"UIKeyboardFrameEndUserInfoKey"] CGRectValue];
+    CGFloat moveY = keyFrame.origin.y - self.view.frame.size.height;
+    
+    [UIView animateWithDuration:duration animations:^{
+        self.view.transform = CGAffineTransformMakeTranslation(0, moveY);
+    }];
+}
+
+
+-(void)setUpUI{
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64+45, SCREENWIDTH,SCREENHEIGHT) style:UITableViewStylePlain];
+    
+    _tableView.contentInset=UIEdgeInsetsMake(0, 0, 150, 0);
+
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    
+    _tableView.backgroundColor = [UIColor colorWithHexString:@"#EBEBEB"];
+    _tableView.tableHeaderView.backgroundColor = [UIColor colorWithHexString:@"#ebebeb"];
+    _tableView.tableFooterView = [UIView new];
+    _tableView.showsVerticalScrollIndicator = NO;
+    
+    [self.view addSubview:_tableView];
+    
+    
+    NSArray *arr = @[@"全部", @"进行中",@"已结束",@"树洞口"];
+    
+    CGFloat bigW = globalRect.size.width / arr.count;
+    for (int i = 0; i < arr.count; i++) {
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(bigW * i, 64, bigW, 45)];
+        btn.tag = (i + 1) *kTag90;
+        [btn setTitleColor: [UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
+        [btn setTitleColor: [UIColor colorWithHexString:@"#0c94f5"] forState:UIControlStateSelected];        [btn setTitle:arr[i] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(bigBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self.btnArrayM addObject:btn];
+        [self.view addSubview:btn];
+        if (i == 0) {
+            btn.selected = YES;
+        }
+    }
+    
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 64+45, bigW, 2)];
+    view.backgroundColor = [UIColor colorWithHexString:@"#0c94f5"];
+    [self.view addSubview:view];
+    self.greenView = view;
+    
+    
+}
+
+/**
+ *  添加工具栏
+ */
+- (void)addToolBar
+{
+   
+    
+    UITextField *textField = [[UITextField alloc] init];
+    textField.returnKeyType = UIReturnKeySend;
+    textField.enablesReturnKeyAutomatically = YES;
+    textField.borderStyle = UITextBorderStyleRoundedRect;
+    // textField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 1)];
+    textField.leftViewMode = UITextFieldViewModeAlways;
+    textField.frame = CGRectMake(0,SCREENHEIGHT-kToolBarH, self.view.frame.size.width , kToolBarH);
+    textField.delegate = self;
+    self.textField = textField;
+    [[UIApplication sharedApplication].keyWindow addSubview:textField];
+}
+
+
+
+# pragma ACTION
+-(void)bigBtnClick:(UIButton*)sender{
+    
+    
+    switch (sender.tag) {
+        case kTag90*4:
+            [self getHoleMessageData];
+            [self addToolBar];
+            break;
+        case kTag90:
+        case kTag90*2:
+        case kTag90*3:
+        [self getDataWithType:(int)(sender.tag-kTag90)/kTag90];
+        [self.textField removeFromSuperview];
+         break;
+        
+        
+        default:
+            break;
+    }
+    
+    
+    
+    type =(int)sender.tag;
+    
+    sender.selected = YES;
+    for (UIButton *button in self.btnArrayM) {
+        if (button != sender) {
+            button.selected = NO;
+        }
+    }
+    
+    CGRect rect = self.greenView.frame;
+    rect.origin.x = sender.frame.origin.x;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.greenView.frame = rect;
+        
+    }];
+    
+    
+    [_tableView reloadData];
+    
+    
+}
+
+
+#pragma mark -tableView
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 5;
+}
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (type==kTag90*4) {
+       return   _cellFrameDatas.count;
+    }
+    
+    
+    return self.dataArray.count;
+    
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    switch (type) {
+        case kTag90:
+        case kTag90*2:
+        case kTag90*3:
+            return 396/2;
+            break;
+        case kTag90*4:{
+            MHCellFrameModel *cellFrame = _cellFrameDatas[indexPath.row];
+            return cellFrame.cellHeght;
+        }
+            break;
+        
+        default:
+            return 0;
+            break;
+    }
+    
+}
+
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    switch (type) {
+        case kTag90:
+        case kTag90*2:
+        case kTag90*3:
+        {
+            static  NSString  * idStr = @"MHAcvicityTableViewCell";
+            MHAcvicityTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:idStr ];
+            if (cell == nil) {
+                cell = [[[NSBundle mainBundle] loadNibNamed:@"MHAcvicityTableViewCell" owner:self options:nil] lastObject];
+                
+            }
+            cell.MODEL = self.dataArray[indexPath.row];
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }
+            break;
+               case kTag90*4:{
+            static NSString *cellIdentifier = @"cell";
+            
+            MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+            
+            if (cell == nil) {
+                cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+            }
+            
+            cell.cellFrame = _cellFrameDatas[indexPath.row];
+            
+            return cell;
+        
+        
+        }
+            break;
+            
+            
+        default:
+            break;
+    }
+    
+    
+    
+    return nil;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+   
+    if (type==kTag90*4) {
+        return;
+    }
+    
+    
+    MHAcvicityModel  * model = self.dataArray[indexPath.row];
+    
+    MHAcvicityInfoViewController  * vc = [[MHAcvicityInfoViewController  alloc] initWithNibName:@"MHAcvicityInfoViewController" bundle:nil];
+    vc.idStr = model.ID;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+
+}
+
+-(void)getDataWithType:(int)typeInt {
+    
+    
+     [self.dataArray removeAllObjects];
+    NSString  * tokenStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"];
+
+    
+    NSString  * idStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"id"];
+    [[NetworkClient sharedClient] POST:[NSString stringWithFormat:@"%@?uiId=%@&loginToken=%@&actType=%@",URL_Activity_List,idStr,tokenStr,@(typeInt)] dict:@{@"loginToken":idStr} succeed:^(id data) {
+        NSArray  * dataArr = (NSArray*)data;
+        [dataArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            MHAcvicityModel  * Model = [MHAcvicityModel mj_objectWithKeyValues:(NSDictionary*)obj];
+            
+           [self.dataArray addObject:Model];
+        }];
+        
+        
+        [_tableView reloadData];
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+    }];
+    
+    
+}
+-(void)getHoleMessageData{
+    
+    _cellFrameDatas =[NSMutableArray array];
+
+    NSString  * tokenStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"];
+    NSString  * idStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"id"];
+    
+    
+    [[NetworkClient sharedClient] POST:[NSString stringWithFormat:@"%@?loginToken=%@&uiId=%@",URL_Tree_Hole_Msg,tokenStr,idStr] dict:nil succeed:^(id data) {
+        NSLog(@"%@",data);
+        NSArray  * messageArr = (NSArray*)data;
+        
+         [messageArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+             
+             MHHoleMessageModel  * message = [MHHoleMessageModel mj_objectWithKeyValues:(NSDictionary*)obj];
+             MHCellFrameModel *lastFrame = [_cellFrameDatas lastObject];
+             MHCellFrameModel *cellFrame = [[MHCellFrameModel alloc] init];
+             message.showTime = ![message.uthMsgDate isEqualToString:lastFrame.message.uthMsgDate];
+             cellFrame.message = message;
+             [_cellFrameDatas addObject:cellFrame];
+
+         
+         
+         
+         }];
+        
+        [_tableView reloadData];
+        
+        
+        
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+    }];
+    
+    
+
+
+
+}
+
+@end

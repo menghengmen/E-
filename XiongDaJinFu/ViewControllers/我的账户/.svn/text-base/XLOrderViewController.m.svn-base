@@ -1,0 +1,130 @@
+//
+//  XLOrderViewController.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/6/26.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "XLOrderViewController.h"
+#import "XLBillTableViewCell.h"
+#import "OrderButton.h"
+#import "WLTabBarButton.h"
+#define kTag86 86
+
+@interface XLOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic, strong) NSMutableArray *btnArrayM;
+@property (strong, nonatomic)  UITableView *tableView;
+
+@end
+
+@implementation XLOrderViewController
+
+- (NSMutableArray *)btnArrayM
+{
+    if (!_btnArrayM) {
+        _btnArrayM = [NSMutableArray array];
+    }
+    return _btnArrayM;
+}
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.title = @"我的订单";
+    [self setUPui];
+    // Do any additional setup after loading the view.
+}
+
+-(void)setUPui{
+
+    self.tableView = [UITableView new];
+    self.tableView.frame = CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT-64);
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.showsVerticalScrollIndicator = NO;
+//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.view addSubview:self.tableView];
+    
+    
+    
+    
+    NSArray *arr = @[@"全部", @"待付款", @"已付款", @"取消/退款"];
+    NSArray * normalArr = @[@"profile_overicon@2x",@"profile_overicon@2x",@"profile_overicon@2x",@"profile_overicon@2x"];
+    NSArray * selectedArr = @[@"profile_payed_icon@2x",@"profile_payed_icon@2x",@"profile_payed_icon@2x",@"profile_payed_icon@2x"];
+    
+    CGFloat space = 5;
+    CGFloat smallW = (SCREENWIDTH - (arr.count + 1) * space) / arr.count;
+    for (int i = 0 ; i < arr.count; i++) {
+        WLTabBarButton *btn = [[WLTabBarButton alloc] initWithFrame:CGRectMake(space + (smallW + space) * i, 64, smallW, 30)];
+        btn.tag = (i + 1) * kTag86;
+        [btn setTitle:arr[i] forState:UIControlStateNormal];
+        [btn setTitleColor:RGB(169, 170, 171) forState:UIControlStateNormal];
+        [btn setTitleColor:RGB(103, 223, 198) forState:UIControlStateSelected];
+        [btn setImage:[UIImage imageNamed:normalArr[i]] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:selectedArr[i]] forState:UIControlStateSelected];
+        btn.titleLabel.font = [UIFont systemFontOfSize:14];
+        [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+//        btn.layer.borderColor = kThisGreenColor.CGColor;
+//        btn.layer.borderWidth = 1.0;
+//        btn.layer.cornerRadius = 4.0;
+        [self.btnArrayM addObject:btn];
+
+        [self.view addSubview:btn];
+        if (i == 0) {
+            btn.selected = YES;
+//            btn.backgroundColor = kThisGreenColor;
+        }
+    }
+
+
+}
+
+-(void)btnClick:(UIButton*)btn{
+    btn.selected = YES;
+//    btn.backgroundColor = kThisGreenColor;
+    for (UIButton *button in self.btnArrayM) {
+        if (button != btn) {
+            button.selected = NO;
+            button.backgroundColor = [UIColor whiteColor];
+        }
+    }
+
+  //刷新数据
+
+}
+
+
+#pragma mark- UITableViewDataSource, UITableViewDelegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+     return 10;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    XLBillTableViewCell *cell = [XLBillTableViewCell myBillCellWithTableView:tableView];
+   
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    
+    return 200;
+    
+}
+
+
+
+
+
+
+@end

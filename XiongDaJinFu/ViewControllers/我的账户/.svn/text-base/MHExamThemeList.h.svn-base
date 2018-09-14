@@ -1,0 +1,24 @@
+//
+//  MHExamThemeList.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/16.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface MHExamThemeList : NSObject
+@property   (nonatomic,copy)   NSString * etLogoUrl;
+@property   (nonatomic,copy)   NSString * etDesc;
+@property   (nonatomic,copy)   NSString * etLogoid;
+@property   (nonatomic,copy)   NSString * etName;
+@property   (nonatomic,copy)   NSString * etUuid;
+@property   (nonatomic,copy)   NSString * ID;
+
+@property   (nonatomic,copy)   NSString * loginToken;
+
+@property   (nonatomic,copy)   NSString * epName;
+@property   (nonatomic,copy)   NSString * epNum;
+@property   (nonatomic,copy)   NSString * epLogoUrl;
+@end

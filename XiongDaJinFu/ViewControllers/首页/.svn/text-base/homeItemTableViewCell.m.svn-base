@@ -1,0 +1,27 @@
+//
+//  homeItemTableViewCell.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/6/26.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "homeItemTableViewCell.h"
+
+
+@implementation homeItemTableViewCell
+
++ (instancetype)personInfoCellWithTableView:(UITableView *)tableView
+{
+    static NSString *identify = @"YJPersonInfoCell";
+    homeItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
+    if (!cell) {
+        cell = [[homeItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
+    }
+    return cell;
+}
+
+
+
+
+@end

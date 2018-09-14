@@ -1,0 +1,15 @@
+//
+//  MHTypeInfo1TableViewCell.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/9.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface MHTypeInfo1TableViewCell : UITableViewCell
++ (instancetype)TypeInfo1WithTableView:(UITableView *)tableView;
+@property (strong, nonatomic) IBOutlet UILabel *examDescLabel;
+
+@end

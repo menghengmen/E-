@@ -1,0 +1,152 @@
+//
+//  MHTrailAccountViewController.m
+//  XiongDaJinFu
+//
+//  Created by MengHeng on 17/7/21.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHTrailAccountViewController.h"
+#import "MHTrailAccountableViewCell.h"
+#import "MHTrailAccount.h"
+
+@interface MHTrailAccountViewController ()<UITableViewDelegate,UITableViewDataSource>
+@property (strong, nonatomic) UITableView *table;
+
+
+@property (strong, nonatomic) NSMutableArray *data;
+
+@end
+
+@implementation MHTrailAccountViewController
+
+-(NSMutableArray*)data{
+    if (!_data) {
+        _data = [NSMutableArray new];
+    }
+    return _data;
+}
+
+-(UITableView *)table {
+    if (!_table) {
+        _table = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height+200) style:UITableViewStylePlain];
+        _table.delegate = self;
+        _table.dataSource = self;
+        _table.rowHeight = 64;
+        _table.tableFooterView = [[UIView alloc] init];
+        _table.sectionHeaderHeight = 225;
+        
+    }
+    return _table;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    [self getData];
+    [self setUpNewNai:@"返回" Title:@"试用账号列表"];
+    [self.view addSubview:self.table];
+    
+    UIButton  * btn = [[UIButton alloc] init];
+    [btn setTitle:@"生成新的试用账号" forState:UIControlStateNormal];
+    btn.backgroundColor = [UIColor colorWithHexString:@"#1c91fd"];
+    
+    
+    [btn addTarget:self action:@selector(newTrailAccount) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btn];
+    
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(btn.superview.mas_bottom);
+        make.width.equalTo(self.view);
+        make.height.equalTo(@40);
+        make.centerX.equalTo(btn.superview);
+    }];
+    
+
+
+
+
+}
+#pragma mark ACION             uiReferral
+-(void)newTrailAccount{
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    NSDictionary  * duct = @{@"uiReferral":@"bbb",@"loginToken":[[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"]};
+    
+
+    
+    [[NetworkClient sharedClient]POST:[NSString stringWithFormat:@"%@?loginToken=%@&uiReferral=bbb",URL_Add_Trial_Account,[[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"]] dict:duct succeed:^(id data) {
+        NSLog(@"%@",data);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [self getData];
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+    }];
+
+
+}
+
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.data.count;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSString *identifier = @"cell";
+    MHTrailAccountableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"MHTrailAccountableViewCell" owner:self options:nil] lastObject];
+        
+    }
+    
+    cell.accountModel =self.data[indexPath.row];
+    return cell;
+}
+
+-(void)getData{
+    
+    
+    [self.data removeAllObjects];
+    NSDictionary  * duct = @{@"uiReferral":@"bbb",@"loginToken":[[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"]};
+    
+    
+    [[NetworkClient sharedClient]POST:[NSString stringWithFormat:@"%@?loginToken=%@&uiReferral=bbb",URL_Trial_Account,[[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"]] dict:nil succeed:^(id data) {
+        NSLog(@"%@",data);
+        NSArray  * arr = (NSArray*)data;
+        [arr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            MHTrailAccount  * model = [MHTrailAccount mj_objectWithKeyValues:(NSDictionary*)obj];
+            [self.data addObject:model];
+            
+        }];
+        [self.table reloadData];
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+    }];
+    
+    
+}
+/*
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
+
+@end

@@ -1,0 +1,67 @@
+//
+//  MHExamEndViewController.m
+//  XiongDaJinFu
+//
+//  Created by MengHeng on 17/9/5.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHExamEndViewController.h"
+#import "MHExamEnd.h"
+#import "AccountViewController.h"
+@interface MHExamEndViewController ()
+{
+    
+    MHExamEnd  * model;
+}
+
+@property (strong, nonatomic) IBOutlet UILabel *paperName;
+@property (strong, nonatomic) IBOutlet UILabel *paperNumber;
+@property (strong, nonatomic) IBOutlet UILabel *answerNumber;
+@property (strong, nonatomic) IBOutlet UILabel *scoreLabel;
+@property (strong, nonatomic) IBOutlet UILabel *paperDesc;
+@property (strong, nonatomic) IBOutlet UIButton *backBtn;
+
+@end
+
+@implementation MHExamEndViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setUpNewNai:nil Title:@"SAS焦虑自评量表_试卷"];
+    self.view.backgroundColor =[UIColor colorWithHexString:@"#89aae0"];
+    self.backBtn.backgroundColor = [UIColor colorWithHexString:@"#0183dc"];
+    self.backBtn.clipsToBounds = YES;
+    self.backBtn.layer.cornerRadius = 10;
+    
+    
+    [self getData];
+}
+-(void)getData{
+    NSString  * tokenStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"];
+    
+    NSString * urlStr = [NSString stringWithFormat:@"%@?loginToken=%@&upId=%@",URL_Test_Exam_End,tokenStr,self.upidStr];
+    [[NetworkClient sharedClient] POST:urlStr dict:nil succeed:^(id data) {
+        NSLog(@"试卷结束%@",data);
+        NSArray  * dataArr1 = (NSArray*)data;
+
+        model =   [MHExamEnd mj_objectWithKeyValues:dataArr1.firstObject];
+        self.paperName.text = [NSString stringWithFormat:@"试卷名:%@",model.epName];
+        self.paperNumber.text = [NSString stringWithFormat:@"题目总数:%@",model.upNum];
+        self.answerNumber.text = [NSString stringWithFormat:@"答题数:%@",model.upNumright];
+        self.scoreLabel.text = [NSString stringWithFormat:@"标准分值:%@",model.upVal];
+        self.paperDesc.text = [NSString stringWithFormat:@"标准分值:%@",model.epValdesc];
+
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+
+}
+- (IBAction)backBtnClick:(UIButton *)sender {
+
+  [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+
+
+@end

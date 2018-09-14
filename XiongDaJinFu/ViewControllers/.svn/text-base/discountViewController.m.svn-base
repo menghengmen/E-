@@ -1,0 +1,123 @@
+//
+//  discountViewController.m
+//  XiongDaJinFu
+//
+//  Created by gary on 2016/12/5.
+//  Copyright © 2016年 digirun. All rights reserved.
+//
+
+#import "discountViewController.h"
+#import "EmotionalTableViewCell.h"
+#import "MHEmotionalTypeViewController.h"
+#import "MHMusicList.h"
+#import "MHPlayVoiceViewController.h"
+@interface discountViewController()<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic,strong)  NSMutableArray  * dataArray;
+
+
+@property (nonatomic,strong)  UITableView  * musicListTableView;
+
+@end
+@implementation discountViewController
+- (NSMutableArray*)dataArray{
+    
+    if (!_dataArray) {
+        _dataArray = [[NSMutableArray  alloc] init];
+    }
+    
+    return _dataArray;
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBar.hidden = YES;
+    [self getData];
+
+}
+
+- (void)viewDidLoad{
+
+    [self setUpNewNai:nil Title:@"情绪调理"];
+    UITableView  * tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT)];
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    tableView.sectionHeaderHeight = 300;
+    tableView.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
+    self.musicListTableView = tableView;
+    
+    UIImageView  * view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 153)];
+    
+    view.contentMode = UIViewContentModeScaleAspectFill;
+    view.image = [UIImage imageNamed:@"qxtl_banner"];
+    tableView.tableHeaderView = view;
+    [self.view addSubview:tableView];
+
+
+
+}
+#pragma mark UITableViewDataSource
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 270*SCREENHEIGHT/1334;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+
+
+    return self.dataArray.count;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static  NSString  * idStr = @"EmotionalTableViewCell";
+    EmotionalTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:idStr ];
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"EmotionalTableViewCell" owner:self options:nil] lastObject];
+        
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.musciModel =self.dataArray[indexPath.row];
+    return cell;
+
+    
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row==0) {
+        MHPlayVoiceViewController  * vc = [MHPlayVoiceViewController new];
+        vc.dpmFileUrlStr = @"http://120.76.65.206:18080/ESMH/upLoad/20170801/dp/3c80deb248d648f0836fdfce15f2290a.mp3";
+        vc.type = PlayTypeBreath;
+        [self.navigationController pushViewController:vc animated:YES];
+        return;
+    }
+   
+    
+    MHMusicList * MODEL = self.dataArray[indexPath.row];
+    
+    MHEmotionalTypeViewController  * emotionVC  = [MHEmotionalTypeViewController new];
+    emotionVC.pdtId = MODEL.ID;
+    emotionVC.imagUrlStr = MODEL.dptLogoURL;
+    [self.navigationController pushViewController:emotionVC animated:YES];
+}
+-(void)getData{
+  
+    [self.dataArray removeAllObjects];
+    NSString  * tokenStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"];
+    [[NetworkClient sharedClient] POST:[NSString stringWithFormat:@"%@?loginToken=%@",URL_Music_List,tokenStr] dict:@{@"loginToken":tokenStr} succeed:^(id data) {
+      NSLog(@"%@",data);
+  
+        NSArray  * dataArr = (NSArray*)data;
+     [dataArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+         MHMusicList  * MusicModel = [MHMusicList mj_objectWithKeyValues:(NSDictionary*)obj];
+    
+         [self.dataArray addObject:MusicModel];
+     }];
+    
+    
+        [self.musicListTableView reloadData];
+    
+    } failure:^(NSError *error) {
+      NSLog(@"%@",error);
+
+  }];
+
+}
+@end

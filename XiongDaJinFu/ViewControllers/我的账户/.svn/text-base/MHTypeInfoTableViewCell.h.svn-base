@@ -1,0 +1,19 @@
+//
+//  MHTypeInfoTableViewCell.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/9.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "MHExamBeginModel.h"
+@interface MHTypeInfoTableViewCell : UITableViewCell
++ (instancetype)TypeInfoWithTableView:(UITableView *)tableView;
+@property (strong, nonatomic) IBOutlet UIImageView *logoImageView;
+@property (strong, nonatomic) IBOutlet UILabel *examNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *typeLabel;
+@property (strong, nonatomic) IBOutlet UILabel *numberLabel;
+@property   (nonatomic,strong)   MHExamBeginModel  * beginModel;
+
+@end

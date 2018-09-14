@@ -1,0 +1,49 @@
+//
+//  MHTypeInfoTableViewCell.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/9.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHTypeInfoTableViewCell.h"
+
+@implementation MHTypeInfoTableViewCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
+
+-(void)setBeginModel:(MHExamBeginModel *)beginModel{
+
+    [self.logoImageView sd_setImageWithURL:[NSURL URLWithString:beginModel.epLogoUrl]];
+    self.examNameLabel.text = beginModel.epName;
+    
+    self.typeLabel.text = beginModel.etName;
+
+    self.numberLabel.text = [NSString stringWithFormat:@"%@人测试过",beginModel.epNum];
+}
+
+
+
++ (instancetype)TypeInfoWithTableView:(UITableView *)tableView{
+    static NSString *identity = @"MHTypeInfoTableViewCell";
+
+    
+    MHTypeInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identity];
+    if (!cell) {
+        cell = [[NSBundle mainBundle] loadNibNamed:@"MHTypeInfoTableViewCell" owner:nil options:nil][0];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    return cell;
+
+
+}
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

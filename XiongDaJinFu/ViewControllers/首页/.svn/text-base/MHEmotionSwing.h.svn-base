@@ -1,0 +1,21 @@
+//
+//  MHEmotionSwing.h
+//  XiongDaJinFu
+//
+//  Created by MengHeng on 17/7/18.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface MHEmotionSwing : NSObject
+
+@property(nonatomic,assign)  int  ufcVal;
+
+@property(nonatomic,copy)  NSString   * ufcDate;
+
+
+
+
+
+@end

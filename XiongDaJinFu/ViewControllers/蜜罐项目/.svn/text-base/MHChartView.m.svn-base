@@ -1,0 +1,240 @@
+//
+//  myview.m
+//  贝塞尔曲线
+//
+//  Created by 哈哈 on 2017/6/10.
+//  Copyright © 2017年 哈哈. All rights reserved.
+//
+
+#import "MHChartView.h"
+#define margin      36
+
+
+#define Start_X          20.0f      // 第一个按钮的X坐标
+#define Start_Y          500.0f     // 第一个按钮的Y坐标
+#define Width_Space      200.0f      // 2个按钮之间的横间距
+#define Height_Space     20.0f     // 竖间距
+#define Button_Height   20.0f    // 高
+#define Button_Width    50.0f    // 宽
+
+
+#define Y_START           220
+#define X_WHITE_SPACE     48
+#define Y_WHITE_SPACE     25
+#define BUTTON_WIDTH      50
+#define BUTTON_HEIGHT     20
+
+#define zzWidth     self.bounds.size.width
+#define zzHeight    self.bounds.size.height
+
+// 颜色RGB
+#define zzColor(r, g, b)  [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+#define zzColorRGBA(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:a]
+// 随机色
+#define zzRandomColor  zzColor(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256))
+
+@implementation MHChartView
+
+-(instancetype)initWithFrame:(CGRect)frame{
+    
+    self = [super initWithFrame:frame];
+    if ( self ) {
+        
+        
+    }
+    return self;
+    
+}
+-(void)drawBingZhuangTu:(NSArray *)x_itemArr and:(NSArray *)y_itemArr{
+    
+    
+    NSArray  * colorArr = [NSArray arrayWithObjects:@"#da0e0b",@"#fe9b00",@"#01adfc",@"#863723",@"#c4615f",@"#4e5a97",@"#666666", nil];
+   
+    
+    CGPoint yPoint = CGPointMake(SCREENWIDTH/2, 100);
+    CGFloat startAngle = 0;
+    CGFloat endAngle;
+    float r = 100.0;
+    
+    //求和
+    float sum=0;
+    for (NSString *str in y_itemArr) {
+        
+        sum += [str floatValue];
+    }
+    
+    for (int i=0; i<x_itemArr.count; i++) {
+        
+        //求每一个的占比
+        float zhanbi = [y_itemArr[i] floatValue]/sum;
+        
+        endAngle = startAngle + zhanbi*2*M_PI;
+        
+        CAShapeLayer *layer = [CAShapeLayer layer];
+        UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:yPoint radius:r startAngle:startAngle endAngle:endAngle clockwise:YES];
+        [path addLineToPoint:yPoint];
+        [path closePath];
+        
+        
+        CGFloat lab_x = yPoint.x + (r + 30/2-50) * cos((startAngle + (endAngle - startAngle)/2)) - 30/2;
+        CGFloat lab_y = yPoint.y + (r + 20/2-50) * sin((startAngle + (endAngle - startAngle)/2)) - 20/2;
+        
+        if (y_itemArr.count==0) {
+            return;
+        }
+        
+        UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(lab_x, lab_y, 50, 20)];
+        lab.text = [NSString stringWithFormat:@"%.1f%@",zhanbi*100,@"%"];
+        lab.textColor = [UIColor whiteColor];
+        lab.font = [UIFont boldSystemFontOfSize:12];
+        lab.textAlignment = NSTextAlignmentCenter;
+        [self addSubview:lab];
+
+        
+        layer.path = path.CGPath;
+        layer.fillColor = [UIColor colorWithHexString:colorArr[i]].CGColor;
+        layer.strokeColor = [UIColor clearColor].CGColor;
+        [self.layer addSublayer:layer];
+        
+        
+        int row = i / 2;
+        //列
+        int column = i % 2;
+        
+        int x = column == 0 ? X_WHITE_SPACE : (320 - X_WHITE_SPACE - BUTTON_WIDTH);
+        int y = Y_START + row * Y_WHITE_SPACE + row * BUTTON_HEIGHT;
+        
+        UIButton *button = [[UIButton alloc] init ];
+        button.tag = i + 1;
+        button.frame = CGRectMake(x, y, BUTTON_WIDTH, BUTTON_HEIGHT);
+        [button addTarget:self action:@selector(mapBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        button.backgroundColor = [UIColor colorWithHexString:colorArr[i]];
+        
+        [self addSubview:button];
+        
+        
+        NSString*zhanBiStr = [NSString stringWithFormat:@"%.1f",zhanbi*100];
+        UILabel  * label = [[UILabel alloc] initWithFrame:CGRectMake(x+60, y, BUTTON_WIDTH+25, BUTTON_HEIGHT)];
+        label.text  = [NSString stringWithFormat:@"%@  %@%@",[x_itemArr objectAtIndex:i ],zhanBiStr,@"%"];
+        label.font  = [UIFont systemFontOfSize:14];
+        label.textColor  = [UIColor blackColor];
+        [self addSubview:label];
+
+        
+       
+        
+        [self bringSubviewToFront:lab];
+
+        startAngle = endAngle;
+    }
+}
+
+-(void)mapBtnClick:(UIButton*)sender{
+    
+    NSLog(@"%@",sender.titleLabel.text);
+    
+}
+//画柱状图
+- (void)drawZhuZhuangTu:(NSArray *)x_itemArr and:(NSArray *)y_itemArr{
+    NSArray  * colorArr = [NSArray arrayWithObjects:@"#db0c0c",@"#ff9900",@"#03acff",@"#883625",@"#c46060",@"#505999",@"#55036a",@"#666666", nil];
+    //[self initDrawView];
+    if (x_itemArr.count==0||y_itemArr.count==0) {
+        return;
+    }
+    //建立坐标轴
+    [self drawZuoBiaoXi:x_itemArr];
+    //画柱状图
+    for (int i=0; i<x_itemArr.count; i++) {
+
+        UIButton  * btn = [[UIButton alloc] initWithFrame:CGRectMake(margin+1.2*margin*i, zzHeight-margin-3*[y_itemArr[i] floatValue], margin, 3*[y_itemArr[i] floatValue])];
+        btn.tag = 666+i;
+        [btn addTarget:self action:@selector(zhuBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        btn.backgroundColor = [UIColor colorWithHexString:colorArr[i]];
+        [self addSubview:btn];
+    }
+    
+    //给x轴加标注
+    for (int i=0; i<x_itemArr.count; i++) {
+        
+        UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(margin+1.2*margin*i, zzHeight-margin, margin, 20)];
+        NSArray  * itemArr = [x_itemArr[i] componentsSeparatedByString:@"-"];
+        
+        lab.text = [NSString stringWithFormat:@"%@/%@",itemArr[1],itemArr[2]];
+        lab.textColor = [UIColor blackColor];
+        lab.font = [UIFont boldSystemFontOfSize:12];
+        lab.textAlignment = NSTextAlignmentCenter;
+        [self addSubview:lab];
+    }
+}
+//画坐标轴
+- (void)drawZuoBiaoXi:(NSArray *)x_itemArr{
+    
+    CAShapeLayer *layer = [CAShapeLayer layer];
+    
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    
+    //坐标轴原点
+    CGPoint rPoint = CGPointMake(margin, zzHeight-margin);
+    
+    //画y轴
+    [path moveToPoint:rPoint];
+    [path addLineToPoint:CGPointMake(margin, self.frame.size.height-margin)];
+    
+    //画y轴的箭头
+    [path moveToPoint:CGPointMake(margin, margin)];
+    [path addLineToPoint:CGPointMake(margin-5, margin+5)];
+    [path moveToPoint:CGPointMake(margin, margin)];
+    [path addLineToPoint:CGPointMake(margin+5, margin+5)];
+    
+    //画x轴
+    [path moveToPoint:rPoint];
+    [path addLineToPoint:CGPointMake(zzWidth-margin, zzHeight-margin)];
+    
+    //画x轴的箭头
+    [path moveToPoint:CGPointMake(zzWidth-margin, zzHeight-margin)];
+    [path addLineToPoint:CGPointMake(zzWidth-margin-5, zzHeight-margin-5)];
+    [path moveToPoint:CGPointMake(zzWidth-margin, zzHeight-margin)];
+    [path addLineToPoint:CGPointMake(zzWidth-margin-5, zzHeight-margin+5)];
+    
+    
+    //画x轴上的标度
+    for (int i=0; i<x_itemArr.count; i++) {
+        
+        [path moveToPoint:CGPointMake(2*margin+1.5*margin*i, zzHeight-margin)];
+        [path addLineToPoint:CGPointMake(2*margin+1.5*margin*i, zzHeight-margin-3)];
+        
+    }
+    
+    
+    //画y轴上的标度
+    for (int i=0; i<10; i++) {
+        
+        [path moveToPoint:CGPointMake(margin, zzHeight-margin*i)];
+        [path addLineToPoint:CGPointMake(margin+3, zzHeight-margin*i)];
+    }
+    
+    layer.path = path.CGPath;
+    layer.fillColor = [UIColor clearColor].CGColor;
+    layer.strokeColor = [UIColor blackColor].CGColor;
+    layer.lineWidth = 2.0;
+    [self.layer addSublayer:layer];
+    
+    //给y轴加标注
+    for (int i=0; i<11; i++) {
+        
+        UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(margin-25, zzHeight-margin*i+20, 25, 20)];
+        lab.text = [NSString stringWithFormat:@"%d", 10*i];
+        lab.textColor = [UIColor blackColor];
+        lab.font = [UIFont boldSystemFontOfSize:12];
+        lab.textAlignment = NSTextAlignmentCenter;
+        [self addSubview:lab];
+    }
+}
+
+-(void)zhuBtnClick:(UIButton*)sender{
+    [self.delegate zhuBtnClickWithTag:sender.tag];
+
+
+}
+@end

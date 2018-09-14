@@ -1,0 +1,15 @@
+//
+//  MHApplyAcvocityTableViewCell.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/22.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface MHApplyAcvocityTableViewCell : UITableViewCell
+@property (strong, nonatomic) IBOutlet UITextField *infoTextfield;
++ (instancetype)ApplyinfoText:(UITableView *)tableView;
+
+@end

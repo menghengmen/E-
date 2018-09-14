@@ -1,0 +1,13 @@
+//
+//  OrderButton.h
+//  XiongDaJinFu
+//
+//  Created by 小彬 on 17/7/5.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface OrderButton : UIButton
+
+@end

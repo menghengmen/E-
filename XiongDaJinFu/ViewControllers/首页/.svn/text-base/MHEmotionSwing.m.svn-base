@@ -1,0 +1,13 @@
+//
+//  MHEmotionSwing.m
+//  XiongDaJinFu
+//
+//  Created by MengHeng on 17/7/18.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHEmotionSwing.h"
+
+@implementation MHEmotionSwing
+
+@end

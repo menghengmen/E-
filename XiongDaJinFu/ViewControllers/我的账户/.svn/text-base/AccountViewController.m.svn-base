@@ -1,0 +1,146 @@
+//
+//  AccountViewController.m
+//  XiongDaJinFu
+//
+//  Created by 小彬 on 17/7/5.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "AccountViewController.h"
+#import "MHTypeInfoTableViewCell.h"
+#import "MHTypeInfo1TableViewCell.h"
+#import "MemberViewController.h"
+#import "MHExamBeginModel.h"
+
+@interface AccountViewController ()<UITableViewDelegate,UITableViewDataSource>
+{
+    MHExamBeginModel  * model;
+}
+
+
+@property(nonatomic,strong)  UITableView *tableView;
+
+@end
+
+@implementation AccountViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self getData];
+   
+    [self setUpNewNai:nil Title:@"SAS焦虑自评量表——试卷"];
+    [self setUPui];
+}
+
+
+
+-(void)setUPui
+{
+    UITableView* tableview = [UITableView new];
+    
+    tableview.frame = CGRectMake(0, 64, SCREENWIDTH, SCREENHEIGHT);
+    tableview.delegate = self;
+    tableview.dataSource = self;
+    tableview.showsVerticalScrollIndicator = NO;
+    
+    tableview.backgroundColor = [UIColor colorWithHexString:@"#EBEBEB"];
+    tableview.tableHeaderView.backgroundColor = [UIColor colorWithHexString:@"#ebebeb"];
+    self.tableView = tableview;
+    [self.view addSubview:self.tableView];
+
+
+    UIButton  * testBtn = [UIFactory newButtonWithType:UIButtonTypeCustom normalImage:nil buttonTitle:@"开始测试" target:self action:@selector(test)];
+    testBtn.backgroundColor = [UIColor colorWithHexString:@"#2ccff1"];
+   
+    testBtn.layer.cornerRadius =20;
+    testBtn.clipsToBounds = YES;
+    [self.view addSubview:testBtn];
+    
+    [testBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(testBtn.superview);
+        make.height.equalTo(@60);
+    }];
+
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row ==0) {
+        return 390;
+
+    }
+    else{
+        return 120;
+    }
+
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 2;
+    
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+   
+    if (indexPath.row == 0) {
+        MHTypeInfoTableViewCell  * cell = [MHTypeInfoTableViewCell TypeInfoWithTableView:tableView];
+    
+        cell.beginModel = model;
+        
+        return cell;
+    }
+    
+    else{
+    
+        MHTypeInfo1TableViewCell*cell = [MHTypeInfo1TableViewCell TypeInfo1WithTableView:tableView];
+        cell.examDescLabel.text = model.epDesc;
+        return cell;
+    }
+   
+
+
+}
+
+
+#pragma mark action
+-(void)test{
+
+ 
+    MemberViewController   * memberVC = [MemberViewController new];
+    memberVC.paperIDStr = model.ID;
+    
+    
+    [self.navigationController pushViewController:memberVC animated:YES];
+
+}
+-(void)getData{
+
+    NSString  * tokenStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"];
+    
+    
+    
+    [[NetworkClient sharedClient] POST:[NSString stringWithFormat:@"%@?loginToken=%@&id=%@",URL_Test_Paper_Start,tokenStr,self.pageIDStr] dict:nil succeed:^(id data) {
+        NSArray  * dataArr1 = (NSArray*)data;
+        
+        
+          model = [MHExamBeginModel mj_objectWithKeyValues:dataArr1.firstObject];
+        
+       
+        [self.tableView reloadData];
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+    }];
+    
+    
+    
+    
+    
+
+
+
+
+}
+
+@end

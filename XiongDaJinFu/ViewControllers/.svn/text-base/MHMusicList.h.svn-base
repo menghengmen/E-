@@ -1,0 +1,40 @@
+//
+//  MHMusicList.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/16.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface MHMusicList : NSObject
+
+@property   (nonatomic,copy)   NSString*dptDesc;
+ @property   (nonatomic,copy)  NSString*dptType;
+@property   (nonatomic,copy)   NSString*dptLogoURL;
+@property   (nonatomic,copy)   NSString*dptLogoid;
+@property   (nonatomic,copy)   NSString*dptMusicNum;
+@property   (nonatomic,copy)   NSString*dptName;
+@property   (nonatomic,copy)   NSString*dptUuid;
+
+@property  (copy,nonatomic) NSString*  ID;
+@property  (copy,nonatomic) NSString*  dptId ;
+
+@property   (nonatomic,copy)   NSString*loginToken;
+
+//新版本
+@property   (nonatomic,strong)   NSArray * list_dpM;
+@end
+
+
+@interface newMusicModel : NSObject
+@property   (nonatomic,copy)   NSString * dpmFileUrl;
+@property   (nonatomic,copy)   NSString * dpmName;
+@property   (nonatomic,copy)   NSString * dptName;
+@property   (nonatomic,copy)   NSString * ID;
+@property   (nonatomic,copy)   NSString *dpmType;
+
+
+
+@end

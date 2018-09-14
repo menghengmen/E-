@@ -1,0 +1,17 @@
+//
+//  MHEmotionalTypeViewController.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/8.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface MHEmotionalTypeViewController : BaseViewController
+
+@property   (nonatomic,copy)   NSString*  pdtId;
+
+@property   (nonatomic,copy)   NSString*  imagUrlStr;
+
+@end

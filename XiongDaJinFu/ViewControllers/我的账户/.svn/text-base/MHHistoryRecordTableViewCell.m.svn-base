@@ -1,0 +1,44 @@
+//
+//  MHHistoryRecordTableViewCell.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/16.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHHistoryRecordTableViewCell.h"
+
+@implementation MHHistoryRecordTableViewCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+   
+
+}
+
+
+
+
+-(void)setModel:(MHExamHistoryList *)model{
+    [self.mainImageView sd_setImageWithURL:[NSURL URLWithString:model.epLogoUrl] placeholderImage:nil];
+    
+    self.epValDescLabel.text = model.epValDesc;
+    
+
+    self.epNameLabel.text = model.epName;
+
+    self.etNameLabel.text = model.etName;
+
+    self.epNumberLabel.text  = [NSString stringWithFormat:@"%@人测试过",model.upNumR];
+
+}
+
+
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

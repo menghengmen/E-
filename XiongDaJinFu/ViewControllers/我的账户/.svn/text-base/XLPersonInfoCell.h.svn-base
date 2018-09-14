@@ -1,0 +1,28 @@
+//
+//  XLPersonInfoCell.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/6/26.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+
+#import <UIKit/UIKit.h>
+@protocol XLPersonInfoCellDelegate <NSObject>
+
+@optional
+- (void)click;
+@end
+
+
+
+@interface XLPersonInfoCell : UITableViewCell
+
++(instancetype)personInfoCell:(UITableView *)tableView;
+
+@property  (weak,nonatomic)  id<XLPersonInfoCellDelegate> delegate;
+
+@property (weak, nonatomic) IBOutlet UIButton *headImage;
+@property (weak, nonatomic) IBOutlet UILabel *name;
+@property (weak, nonatomic) IBOutlet UILabel *type;
+@end

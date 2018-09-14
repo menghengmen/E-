@@ -1,0 +1,18 @@
+//
+//  MHExamHistoryList.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/16.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface MHExamHistoryList : NSObject
+@property   (nonatomic,copy)   NSString*epLogoUrl;
+@property   (nonatomic,copy)   NSString*epValDesc;
+@property   (nonatomic,copy)   NSString*etName;
+@property   (nonatomic,copy)   NSString*upNumR;
+@property   (nonatomic,copy)   NSString*epName;
+
+@end

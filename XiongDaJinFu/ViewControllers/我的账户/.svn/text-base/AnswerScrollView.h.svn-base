@@ -1,0 +1,18 @@
+//
+//  AnswerScrollView.h
+//  答题界面
+//
+//  Created by 哈哈 on 2017/7/8.
+//  Copyright © 2017年 哈哈. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface AnswerScrollView : UIView
+
+
+-(instancetype)initWithFrame:(CGRect)frame withDataArray:(NSArray*)dataArray;
+
+
+@property(assign,nonatomic)  int currentPage;
+@end

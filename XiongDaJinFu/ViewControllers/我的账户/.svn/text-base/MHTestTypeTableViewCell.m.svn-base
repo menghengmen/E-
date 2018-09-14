@@ -1,0 +1,46 @@
+//
+//  MHTestTypeTableViewCell.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/9.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHTestTypeTableViewCell.h"
+
+@implementation MHTestTypeTableViewCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+
+    self.backgroundView11.backgroundColor =[UIColor colorWithHexString:@"#fefefe"];
+    self.backgroundColor = [UIColor colorWithHexString:@"#eff3f6"];
+
+    self.titleLabel.textColor = [UIColor colorWithHexString:@"#333333"];
+
+    self.numberLabel.textColor = [UIColor colorWithHexString:@"#888888"];
+
+    self.nameLabel.backgroundColor = [UIColor colorWithHexString:@"e6f4fe"];
+    self.nameLabel.textColor = [UIColor colorWithHexString:@"0c94f5"];
+    self.nameLabel.clipsToBounds = YES;
+
+}
+-(void)setModel:(MHExamThemeList *)model{
+  
+    [self.logoImageView sd_setImageWithURL:[NSURL URLWithString:model.epLogoUrl]];
+    self.numberLabel.text = [NSString stringWithFormat:@"%@人测试过",model.epNum];
+    self.titleLabel.text = model.epName;
+    self.nameLabel.text  = [NSString stringWithFormat:@"  %@  ",model.etName];
+
+
+
+}
+
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

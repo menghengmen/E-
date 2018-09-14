@@ -1,0 +1,27 @@
+//
+//  MHCellFrameModel.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/24.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+@class MHHoleMessageModel;
+@interface MHCellFrameModel : NSObject
+
+#define textPadding 5
+
+
+@property (nonatomic, strong) MHHoleMessageModel  *message;
+
+@property (nonatomic, assign, readonly) CGRect timeFrame;
+@property (nonatomic, assign, readonly) CGRect iconFrame;
+@property (nonatomic, assign, readonly) CGRect textFrame;
+@property (nonatomic, assign, readonly) CGRect nickNameFrame;
+
+
+@property (nonatomic, assign, readonly) CGFloat cellHeght;
+
+
+@end

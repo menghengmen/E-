@@ -1,0 +1,18 @@
+//
+//  MHExamEnd.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/9/5.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface MHExamEnd : NSObject
+@property   (nonatomic,copy)   NSString * epName;
+@property   (nonatomic,copy)   NSString * epValdesc;
+@property   (nonatomic,copy)   NSString * upNum;
+@property   (nonatomic,copy)   NSString * upNumerror;
+@property   (nonatomic,copy)   NSString * upNumright;
+@property   (nonatomic,copy)   NSString *upVal;
+@end

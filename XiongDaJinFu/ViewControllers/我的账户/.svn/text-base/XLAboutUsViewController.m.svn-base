@@ -1,0 +1,142 @@
+//
+//  XLAboutUsViewController.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/6/27.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "XLAboutUsViewController.h"
+#import "XLAboutViewController.h"
+@interface XLAboutUsViewController ()<UITableViewDataSource,UITableViewDelegate>
+@property (strong, nonatomic)  UIImageView *logoImage;
+@property (nonatomic, strong) UITableView *aboutUsTab;
+@property (nonatomic, strong) UIImageView *picImage;
+
+
+@end
+
+@implementation XLAboutUsViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setUpUI];
+    self.title = @"关于我们";
+    // Do any additional setup after loading the view from its nib.
+}
+-(void)setUpUI{
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#ebebeb"];
+    
+    self.picImage = [UIImageView new];
+    [self.view addSubview:self.picImage];
+    [self.picImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(64+55);
+        make.centerX.equalTo(self.view);
+        make.width.equalTo(@88);
+        make.height.equalTo(@88);
+        
+    }];
+    self.picImage.contentMode = UIViewContentModeScaleAspectFill;
+    self.picImage.image = [UIImage imageNamed:@"goods"];
+    
+    self.aboutUsTab = [UITableView new];
+    [self.view addSubview:self.aboutUsTab];
+    [self.aboutUsTab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(300);
+        make.bottom.left.and.right.equalTo(self.view);
+    }];
+    self.aboutUsTab.dataSource = self;
+    self.aboutUsTab.delegate = self;
+    [self.aboutUsTab setSeparatorColor:[UIColor clearColor]];
+    self.aboutUsTab.backgroundColor = [UIColor clearColor];
+    self.aboutUsTab.bounces = NO;
+    [self.view addSubview:self.aboutUsTab];
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 3;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CellIdentifier = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (cell == nil) {
+        cell = [UITableViewCell new];
+        cell.backgroundColor = [UIColor clearColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        UIView * containerView = [UIView new];
+        [cell addSubview:containerView];
+        containerView.backgroundColor = [UIColor clearColor];
+        [containerView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(cell);
+            make.height.equalTo(@45);
+            make.centerY.equalTo(cell);
+        }];
+        cell.backgroundColor = [UIColor whiteColor];
+        UIView *lineView = [UIView new];
+        lineView.backgroundColor = [UIColor colorWithHexString:@"#e6e6e6"];
+        [cell addSubview:lineView];
+        [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.left.and.right.equalTo(containerView);
+            make.height.equalTo(@1);
+        }];
+        
+        UILabel * cellLabel = [UIFactory newlabelWithTextColor:LRRGBColor(154, 154, 154) withTitle:nil fontSize:15];
+        cellLabel.textAlignment = NSTextAlignmentLeft;
+        [cell addSubview:cellLabel];
+        [cellLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            //            make.left.equalTo(redView).offset(8);
+            make.left.equalTo(containerView).offset(25);
+            make.centerY.equalTo(containerView);
+            make.width.equalTo(@200);
+            make.height.equalTo(@45);
+        }];
+        
+        UILabel * rightCellLabel = [UIFactory newlabelWithTextColor:LRRGBColor(195, 197, 202) withTitle:nil fontSize:15];
+        rightCellLabel.textAlignment = NSTextAlignmentRight;
+        [cell addSubview:rightCellLabel];
+        [rightCellLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            //            make.left.equalTo(redView).offset(8);
+            make.right.equalTo(containerView).offset(-25);
+            make.centerY.equalTo(containerView);
+            make.width.equalTo(@200);
+            make.height.equalTo(@45);
+        }];
+        
+        switch (indexPath.row) {
+            case 0:
+            {
+                cellLabel.text = @"检查更新";
+            }
+                break;
+            case 1:
+            {
+                cellLabel.text = @"为旅游去吧评分";
+            }
+                break;
+            case 2:
+            {
+                cellLabel.text = @"关于旅游去吧";
+            }
+                break;
+                
+                           default:
+                //                [self.aboutUsTab setSeparatorColor:[UIColor clearColor]];
+                break;
+        }
+    }
+    
+    
+    return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == 2) {
+        [self.navigationController pushViewController:[XLAboutViewController new] animated:YES];
+    }
+
+}
+
+
+@end

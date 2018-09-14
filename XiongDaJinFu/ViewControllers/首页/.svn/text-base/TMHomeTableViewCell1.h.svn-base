@@ -1,0 +1,18 @@
+//
+//  TMHomeTableViewCell1.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/29.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface TMHomeTableViewCell1 : UITableViewCell
+@property (strong, nonatomic) IBOutlet UIImageView *iconImageView;
+@property (strong, nonatomic) IBOutlet UILabel *todayEmotionLabel;
+@property (strong, nonatomic) IBOutlet UILabel *dateStrLabel;
+@property (strong, nonatomic) IBOutlet UIView *seporLabel;
+@property (strong, nonatomic) IBOutlet UILabel *typeLabel;
+@property (strong, nonatomic) IBOutlet UILabel *descriLabel;
+@end

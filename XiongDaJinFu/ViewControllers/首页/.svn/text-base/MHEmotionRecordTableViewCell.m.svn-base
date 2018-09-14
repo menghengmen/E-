@@ -1,0 +1,41 @@
+//
+//  MHEmotionRecordTableViewCell.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/10.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHEmotionRecordTableViewCell.h"
+
+@implementation MHEmotionRecordTableViewCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
++ (instancetype)MHEmotionRecordWithTableView:(UITableView *)tableView{
+
+
+    static NSString *identity = @"MHEmotionRecordTableViewCell";
+    
+    
+    MHEmotionRecordTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identity];
+    if (!cell) {
+        cell = [[NSBundle mainBundle] loadNibNamed:@"MHEmotionRecordTableViewCell" owner:nil options:nil][0];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    return cell;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+- (IBAction)editBtnClick:(UIButton *)sender {
+
+    [self.delegate editBtnClick];
+}
+
+@end

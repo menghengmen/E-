@@ -1,0 +1,295 @@
+//
+//  XiongDaClubViewController.m
+//  XiongDaJinFu
+//
+//  Created by 码动 on 16/10/13.
+//  Copyright © 2016年 digirun. All rights reserved.
+//
+
+#import "NewXiongDaClubViewController.h"
+#import "XLMessageViewController.h"
+#import "AccountViewController.h"
+#import "MemberViewController.h"
+#import "XLOrderViewController.h"
+#import "registerViewController.h"
+#import "XLPersonInfoCell.h"
+#import "XLMeInfoCell.h"
+#import "XLButtonCell.h"
+#import "XLAboutUsViewController.h"
+#import "XLLoginViewController.h"
+#import "AccountViewController.h"
+
+#import "MHThemeTableViewCell.h"
+#import "MHTestTypeTableViewCell.h"
+#import "MHHistoryRecordTableViewCell.h"
+
+#import "MHExamThemeList.h"
+#import "MHExamHistoryList.h"
+#define kTag81 81
+
+@interface NewXiongDaClubViewController ()<UITableViewDelegate,UITableViewDataSource,XLPersonInfoCellDelegate>
+
+
+@property (nonatomic, strong) UIView *greenView;
+
+@property (nonatomic, strong) NSMutableArray *btnArrayM;
+
+
+@property (nonatomic,strong)  NSMutableArray  * dataArray;
+
+@end
+
+
+
+@implementation NewXiongDaClubViewController
+{
+    UITableView *_tableView;
+    int  type;
+}
+- (NSMutableArray*)dataArray{
+    
+    if (!_dataArray) {
+        _dataArray = [[NSMutableArray  alloc] init];
+    }
+    
+    return _dataArray;
+}
+- (NSMutableArray *)btnArrayM
+{
+    if (!_btnArrayM) {
+        _btnArrayM = [NSMutableArray array];
+    }
+    return _btnArrayM;
+}
+
+
+-(void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBar.hidden = YES;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self getData];
+    
+    
+    type = kTag81;
+    
+    [self setUpNewNai:nil Title:@"情绪测评"];
+    [self setUpUI];
+    
+}
+
+-(void)setUpUI{
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64+45, SCREENWIDTH,SCREENHEIGHT) style:UITableViewStylePlain];
+    
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    
+    _tableView.backgroundColor = [UIColor colorWithHexString:@"#EBEBEB"];
+    _tableView.tableHeaderView.backgroundColor = [UIColor colorWithHexString:@"#ebebeb"];
+    _tableView.tableFooterView = [UIView new];
+    _tableView.showsVerticalScrollIndicator = NO;
+    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 40, 0);
+    [self.view addSubview:_tableView];
+    
+    
+    NSArray *arr = @[@"情绪健康度测评", @"情绪素养测评"];
+    
+    CGFloat bigW = globalRect.size.width / arr.count;
+    for (int i = 0; i < arr.count; i++) {
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(bigW * i, 64, bigW, 45)];
+        btn.tag = (i + 1) *kTag81;
+        [btn setTitleColor: [UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
+        [btn setTitleColor: [UIColor colorWithHexString:@"#0c94f5"] forState:UIControlStateSelected];
+        [btn setTitle:arr[i] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(bigBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self.btnArrayM addObject:btn];
+        [self.view addSubview:btn];
+        if (i == 0) {
+            btn.selected = YES;
+        }
+    }
+    
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 64+45-1, bigW, 2)];
+    view.backgroundColor = [UIColor colorWithHexString:@"#0c94f5"];
+    [self.view addSubview:view];
+    self.greenView = view;
+    
+    
+}
+
+
+# pragma ACTION
+-(void)bigBtnClick:(UIButton*)sender{
+    
+    
+    type =(int)sender.tag;
+    
+    sender.selected = YES;
+    for (UIButton *button in self.btnArrayM) {
+        if (button != sender) {
+            button.selected = NO;
+        }
+    }
+    
+    CGRect rect = self.greenView.frame;
+    rect.origin.x = sender.frame.origin.x;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.greenView.frame = rect;
+        
+    }];
+    
+    switch (type) {
+        case kTag81:
+            [self getData];
+            break;
+        case kTag81*2:
+            [self getHotRecommend];
+            break;
+            default:
+            break;
+    }
+    
+    
+    
+    
+    [_tableView reloadData];
+    
+    
+}
+
+
+#pragma mark -tableView
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 5;
+}
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.dataArray.count;
+    
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+               return 112 ;
+    
+
+}
+
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (type) {
+        case kTag81:
+        {
+            static  NSString  * idStr = @"MHThemeTableViewCell";
+            MHTestTypeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:idStr ];
+            if (cell == nil) {
+                cell = [[[NSBundle mainBundle] loadNibNamed:@"MHTestTypeTableViewCell" owner:self options:nil] lastObject];
+                
+            }
+            cell.model = self.dataArray[indexPath.row];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }
+            break;
+            
+        case kTag81*2:{
+            static  NSString  * idStr = @"MHTestTypeTableViewCell";
+            MHTestTypeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:idStr ];
+            if (cell == nil) {
+                cell = [[[NSBundle mainBundle] loadNibNamed:@"MHTestTypeTableViewCell" owner:self options:nil] lastObject];
+                
+            }
+            cell.model = self.dataArray[indexPath.row];
+            
+            if (indexPath.row%2==0) {
+                cell.nameLabel.backgroundColor = [UIColor colorWithHexString:@"e6f4fe"];
+                cell.nameLabel.textColor = [UIColor colorWithHexString:@"0c94f5"];
+            }else{
+                cell.nameLabel.backgroundColor = [UIColor colorWithHexString:@"ebfafc"];
+                cell.nameLabel.textColor = [UIColor colorWithHexString:@"39d0dd"];
+                
+            }
+            
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+            
+            
+            
+        }
+       
+        default:
+            break;
+    }
+    
+    
+    
+    return nil;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    // [self.navigationController pushViewController:[XLMessageViewController new] animated:YES];
+        MHExamThemeList  * model = self.dataArray[indexPath.row];
+        AccountViewController   * vc = [AccountViewController new];
+        vc.pageIDStr = model.ID;
+        [self.navigationController pushViewController:vc animated:YES];
+    
+    
+    
+}
+#pragma XLPersonInfoCellDelegate
+-(void)click{
+    
+    
+    [self.navigationController pushViewController:[XLLoginViewController new] animated:YES];
+    
+    
+}
+
+-(void)getHotRecommend{
+    
+    [self.dataArray removeAllObjects];
+    NSString  * tokenStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"];
+    [[NetworkClient sharedClient] POST:[NSString stringWithFormat:@"%@?loginToken=%@",URL_SuYang_Test_List,tokenStr] dict:@{@"loginToken":tokenStr} succeed:^(id data) {
+        NSArray  * dataArr = (NSArray*)data;
+        [dataArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            MHExamThemeList  * Model = [MHExamThemeList mj_objectWithKeyValues:(NSDictionary*)obj];
+            
+            [self.dataArray addObject:Model];
+        }];
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+    }];
+}
+
+-(void)getData{
+    [self.dataArray removeAllObjects];
+    NSString  * tokenStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"];
+    // [NSString stringWithFormat:@"%@?loginToken=%@&uiId=%@",URL_Test_HistoryList,tokenStr,uildStr]
+    [[NetworkClient sharedClient] POST:[NSString stringWithFormat:@"%@?loginToken=%@",URL_Health_Test_List,tokenStr] dict:@{@"loginToken":tokenStr} succeed:^(id data) {
+        NSArray  * dataArr = (NSArray*)data;
+        [dataArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            MHExamThemeList  * Model = [MHExamThemeList mj_objectWithKeyValues:(NSDictionary*)obj];
+            
+            [self.dataArray addObject:Model];
+        }];
+        
+        
+        [_tableView reloadData];
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+    }];
+    
+    
+}
+@end

@@ -1,0 +1,13 @@
+//
+//  MHTrailAccountViewController.h
+//  XiongDaJinFu
+//
+//  Created by MengHeng on 17/7/21.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "BaseViewController.h"
+
+@interface MHTrailAccountViewController : BaseViewController
+
+@end

@@ -1,0 +1,242 @@
+//
+//  MHAcvicityInfoViewController.m
+//  XiongDaJinFu
+//
+//  Created by 小彬 on 17/7/22.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHAcvicityInfoViewController.h"
+#import "acvicityInfo2TableViewCell.h"
+#import "AcvicityInfo1TableViewCell.h"
+#import "acvicityInfo3TableViewCell.h"
+#import "acvicityInfo4TableViewCell.h"
+#import "MHAcvicityInfo.h"
+
+#import "MHApplyAcvicityViewController.h"
+@interface MHAcvicityInfoViewController ()<UITableViewDataSource,UITableViewDelegate>
+{
+
+    MHAcvicityInfo  * model ;
+    UILabel  * numberLabel;
+}
+@property(nonatomic,strong)  UITableView  * InfotableView;
+
+@end
+
+@implementation MHAcvicityInfoViewController
+
+-(UITableView*)InfotableView{
+
+    if (!_InfotableView) {
+        _InfotableView =[[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH,SCREENHEIGHT-64) style:UITableViewStylePlain];
+    }
+
+    return _InfotableView;
+}
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self getdata];
+    [self setUpNewNai:nil Title:@"活动详情"];
+
+    [self setUpUI];
+
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+-(void)setUpUI{
+    
+    self.InfotableView.delegate = self;
+    self.InfotableView.dataSource = self;
+    
+    self.InfotableView.backgroundColor = [UIColor colorWithHexString:@"#EBEBEB"];
+    self.InfotableView.tableHeaderView.backgroundColor = [UIColor colorWithHexString:@"#ebebeb"];
+    self.InfotableView.tableFooterView = [UIView new];
+    self.InfotableView.showsVerticalScrollIndicator = NO;
+    
+    [self.view addSubview:self.InfotableView];
+
+  
+    UILabel  * label = [[UILabel alloc] init];
+    label.backgroundColor = [UIColor colorWithHexString:@"#eff4f5"];
+    label.textColor = [UIColor colorWithHexString:@"#9a9a9a"];
+    numberLabel = label;
+    [self.view addSubview:label];
+    [label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.bottom.equalTo(self.view);
+        make.width.equalTo(@(SCREENWIDTH/2));
+        make.height.equalTo(@44);
+     }];
+
+    UIImageView  * icon = [XDCommonTool newImageViewWithName:@"hdxq_icon1"];
+    [self.view addSubview:icon];
+    [icon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(label.mas_left).offset(15);
+        make.width.equalTo(@17.5);
+        make.height.equalTo(@16);
+        make.centerY.equalTo(label.mas_centerY);
+        
+    }];
+    
+    
+    
+    
+    
+    
+    
+    
+    UIButton  * btn = [[UIButton alloc] init];
+    [self.view addSubview:btn];
+    [btn setTitle:@"报名" forState:UIControlStateNormal];
+    btn.backgroundColor = [UIColor colorWithHexString:@"#0b95f5"];
+    [btn addTarget:self action:@selector(APPLY) forControlEvents:UIControlEventTouchUpInside];
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.bottom.equalTo(self.view);
+        make.width.equalTo(@(SCREENWIDTH/2));
+        make.height.equalTo(@44);
+    }];
+  
+
+
+
+
+}
+#pragma mark -action
+
+-(void)APPLY{
+    MHApplyAcvicityViewController  * vc = [MHApplyAcvicityViewController new];
+    
+    vc.ApplyIdStr = self.idStr;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+
+
+}
+#pragma mark -tableView
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    switch (indexPath.section) {
+        case 0:
+            return 210;
+            break;
+        case 1:
+            //return [XDCommonTool getSizeWithString:[NSString stringWithFormat:@"     %@%@",model.actiAbout, model.actiDesc] with:[UIFont systemFontOfSize:12] withSize:CGSizeMake(SCREENWIDTH, 400)].height;
+            //return [self getHeightLineWithString:[NSString stringWithFormat:@"     %@%@",model.actiAbout, model.actiDesc] withWidth:SCREENWIDTH withFont:[UIFont systemFontOfSize:15]];
+            return 658/2;
+            break;
+        case 2:
+            return 150;
+            break;
+        case 3:
+            return 190;
+            break;
+        default:
+            break;
+    }
+
+    return 0;
+
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 10;
+}
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 4;
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+    
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    switch (indexPath.section) {
+        case 0:{
+            AcvicityInfo1TableViewCell  * cell = [AcvicityInfo1TableViewCell MHAcvicityInfo1TableViewCellWithTableView:tableView];
+            [cell.mainImageView sd_setImageWithURL:[NSURL URLWithString:model.actiLogoUrl]];
+            cell.titleLabel.text = model.actiName;
+            
+            return cell;
+        }
+            
+            break;
+        case 1:{
+            acvicityInfo2TableViewCell  * cell = [acvicityInfo2TableViewCell MHAcvicityInfo2TableViewCellWithTableView:tableView];
+         
+            
+            cell.desLabel.text = [NSString stringWithFormat:@"     %@%@",model.actiAbout, model.actiDesc];
+            cell.desLabel.numberOfLines = 0;
+            return cell;
+        }
+            
+            break;
+        case 2:{
+                acvicityInfo3TableViewCell  * cell = [acvicityInfo3TableViewCell MHAcvicityInfo3TableViewCellWithTableView:tableView];
+            cell.baoMingDate.text = [NSString stringWithFormat:@"报名日期:%@~%@",model.actiDates,model.actiDatee];
+            cell.acvicityDate.text =[NSString stringWithFormat:@"活动日期:%@~%@",model.actiCyDates,model.actiCyDatee];
+            cell.acvicityTime.text =[NSString stringWithFormat:@"活动时间:%@",model.actiTimescope];
+
+            return cell;
+            }
+            
+            break;
+        case 3:{
+                acvicityInfo4TableViewCell  * cell = [acvicityInfo4TableViewCell MHAcvicityInfo4TableViewCellWithTableView:tableView];
+                return cell;
+            }
+            
+            break;
+        default:
+            break;
+    }
+
+    return nil;
+ 
+}
+-(void)getdata{
+
+    NSString  * tokenStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"];
+    NSString  * idStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"id"];
+
+    
+    [[NetworkClient sharedClient] POST:[NSString stringWithFormat:@"%@?id=%@&loginToken=%@&uiId=%@",URL_Activity_Info,self.idStr,tokenStr,idStr] dict:nil succeed:^(id data) {
+        NSLog(@"%@",data);
+        NSArray  * arr = (NSArray*)data;
+        model = [MHAcvicityInfo mj_objectWithKeyValues:arr.firstObject];
+        [self.InfotableView reloadData];
+        numberLabel.text  = [NSString stringWithFormat:@"        已%@人报名",model.actiNum];
+        } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+
+    }];
+
+
+}
+#pragma mark - 根据字符串计算label高度
+- (CGFloat)getHeightLineWithString:(NSString *)string withWidth:(CGFloat)width withFont:(UIFont *)font {
+    
+    //1.1最大允许绘制的文本范围
+    CGSize size = CGSizeMake(width, 2000);
+    //1.2配置计算时的行截取方法,和contentLabel对应
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineSpacing:10];
+    //1.3配置计算时的字体的大小
+    //1.4配置属性字典
+    NSDictionary *dic = @{NSFontAttributeName:font, NSParagraphStyleAttributeName:style};
+    //2.计算
+    //如果想保留多个枚举值,则枚举值中间加按位或|即可,并不是所有的枚举类型都可以按位或,只有枚举值的赋值中有左移运算符时才可以
+    CGFloat height = [string boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:dic context:nil].size.height;
+    
+    return height;
+}
+
+@end

@@ -1,0 +1,16 @@
+//
+//  MessageCell.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/24.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+@class MHCellFrameModel;
+
+@interface MessageCell : UITableViewCell
+
+@property (nonatomic, strong) MHCellFrameModel *cellFrame;
+
+@end

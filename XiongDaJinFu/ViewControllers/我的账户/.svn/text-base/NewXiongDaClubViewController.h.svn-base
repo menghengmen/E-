@@ -1,0 +1,13 @@
+//
+//  NewXiongDaClubViewController.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/9/24.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "BaseViewController.h"
+
+@interface NewXiongDaClubViewController : BaseViewController
+
+@end

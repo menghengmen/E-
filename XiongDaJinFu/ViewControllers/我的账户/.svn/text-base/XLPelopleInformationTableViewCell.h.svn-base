@@ -1,0 +1,28 @@
+//
+//  XLPelopleInformationTableViewCell.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/6/26.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@class XLPelopleInformationTableViewCell;
+@protocol XLPelopleInformationTableViewCellDelegate <NSObject>
+
+@optional
+- (void)personInfoChange:(NSString *)change andCell:(XLPelopleInformationTableViewCell *)cell;
+- (void)personInfoBeginEdit:(UITextField *)textField andCell:(XLPelopleInformationTableViewCell *)cell;
+@end
+
+@interface XLPelopleInformationTableViewCell : UITableViewCell
+
+@property (nonatomic, strong) UITextField *text;
+@property (nonatomic, weak) UILabel *name;
+
+@property (nonatomic, weak) id<XLPelopleInformationTableViewCellDelegate> delegate;
+
++ (instancetype)personInfoCellWithTableView:(UITableView *)tableView;
+
+@end

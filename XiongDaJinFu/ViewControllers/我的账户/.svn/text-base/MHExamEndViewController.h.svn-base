@@ -1,0 +1,14 @@
+//
+//  MHExamEndViewController.h
+//  XiongDaJinFu
+//
+//  Created by MengHeng on 17/9/5.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "BaseViewController.h"
+
+@interface MHExamEndViewController : BaseViewController
+@property   (nonatomic,copy)   NSString  * upidStr;
+
+@end

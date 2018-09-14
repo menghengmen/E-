@@ -1,0 +1,39 @@
+//
+//  XLBillTableViewCell.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/6/27.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "XLBillTableViewCell.h"
+
+@implementation XLBillTableViewCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
++ (instancetype)myBillCellWithTableView:(UITableView *)tableView
+{
+    
+    
+    static NSString *identity = @"YJMyBillCell";
+    XLBillTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identity];
+    if (!cell) {
+        cell = [[NSBundle mainBundle] loadNibNamed:@"XLBillTableViewCell" owner:nil options:nil][0];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+    }
+    
+    return cell;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

@@ -1,0 +1,164 @@
+//
+//  MHApplyAcvicityViewController.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/22.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHApplyAcvicityViewController.h"
+#import "MHApplyAcvocityTableViewCell.h"
+#import "XLInfoTextCell.h"
+@interface MHApplyAcvicityViewController ()<UITableViewDataSource,UITableViewDelegate,XLInfoTextCellDelegate>
+
+@property(nonatomic,strong)  UITableView  * InfotableView;
+@property(nonatomic,strong)  NSMutableArray * placeHolderArray;
+@property (nonatomic, strong)NSMutableDictionary *parameters;
+@property(nonatomic,strong)  NSMutableArray *    placeTitleArray;
+@end
+
+@implementation MHApplyAcvicityViewController
+-(NSMutableArray*)placeHolderArray{
+    if (!_placeHolderArray) {
+        _placeHolderArray = [[NSMutableArray alloc] initWithObjects:@"参与日期：",@"参与人数：",@"联系人：",@"电话：",@"单位：", nil];
+    }
+
+    return _placeHolderArray;
+
+}
+-(NSMutableArray*)placeTitleArray{
+    if (!_placeTitleArray) {
+        _placeTitleArray = [[NSMutableArray alloc] initWithObjects:@"2017-07-25",@"输入人数",@"联系人：",@"请填写电话",@"请填写工作单位", nil];
+    }
+    
+    return _placeTitleArray;
+    
+}
+-(NSMutableDictionary *)parameters
+{
+    if (!_parameters) {
+        _parameters = [NSMutableDictionary dictionaryWithDictionary:@{@"uasuDate":@"",@"uasuNum":@"",@"uasuName":@"",@"uasuPhone":@"",@"uasuComName":@"",@"loginToken":@"",@"actiId":@""}];
+    }
+    return _parameters;
+}
+
+-(UITableView*)InfotableView{
+    
+    if (!_InfotableView) {
+        _InfotableView =[[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREENWIDTH,SCREENHEIGHT) style:UITableViewStylePlain];
+    }
+    
+    return _InfotableView;
+}
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setUpUI];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    [self setUpNewNai:nil Title:@"报名"];
+
+}
+
+-(void)setUpUI{
+
+    
+    self.InfotableView.delegate = self;
+    self.InfotableView.dataSource = self;
+    
+    self.InfotableView.backgroundColor = [UIColor colorWithHexString:@"#EBEBEB"];
+    self.InfotableView.tableHeaderView.backgroundColor = [UIColor colorWithHexString:@"#ebebeb"];
+    self.InfotableView.tableFooterView = [UIView new];
+    self.InfotableView.showsVerticalScrollIndicator = NO;
+    self.InfotableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.InfotableView.rowHeight = 64;
+    [self.view addSubview:self.InfotableView];
+    
+    UIButton  * btn = [[UIButton alloc] init];
+    [self.view addSubview:btn];
+    [btn setTitle:@"提交信息" forState:UIControlStateNormal];
+    btn.backgroundColor = [UIColor colorWithHexString:@"#0b95f5"];
+    [btn addTarget:self action:@selector(APPLYInfo) forControlEvents:UIControlEventTouchUpInside];
+    btn.layer.cornerRadius = 5;
+    btn.clipsToBounds = YES;
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top).offset(400);
+        make.left.equalTo(self.view.mas_left).offset(16);
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.height.equalTo(@46);
+    }];
+
+}
+-(void)APPLYInfo{
+    [self.view becomeFirstResponder];
+    NSString  * tokenStr =   [[XDCommonTool readDicFromUserDefaultWithKey:USER_INFO].firstObject objectForKey:@"loginToken"];
+
+    [self.parameters setObject:tokenStr forKey:@"loginToken"];
+    [self.parameters setObject:self.ApplyIdStr forKey:@"actiId"];
+
+    
+    [[NetworkClient sharedClient] POST:[NSString stringWithFormat:@"%@?actiId=%@&loginToken=%@&uasuDate=%@&uasuNum=%@&uasuPhone=%@&uasuComName=%@&uasuName=%@",URL_Activity_Info,self.ApplyIdStr,tokenStr,[self.parameters objectForKey:@"uasuDate"],[self.parameters objectForKey:@"uasuNum"],[self.parameters objectForKey:@"uasuPhone"],[self.parameters objectForKey:@"uasuComName"],[self.parameters objectForKey:@"uasuName"]] dict:self.parameters succeed:^(id data) {
+       NSLog(@"%@",data);
+   } failure:^(NSError *error) {
+       NSLog(@"%@",error);
+
+   }];
+
+}
+
+#pragma mark -tableView
+
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 5;
+    
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    XLInfoTextCell *cell = [XLInfoTextCell  infoText:tableView];
+    cell.text.textAlignment = NSTextAlignmentLeft;
+    cell.text.placeholder = self.placeTitleArray[indexPath.row];
+    cell.name.textAlignment = NSTextAlignmentCenter;
+    cell.name.text = self.placeHolderArray[indexPath.row];
+    cell.delegate = self;
+    
+    return cell;
+    
+}
+-(void)personInfoChange:(NSString *)change andCell:(XLInfoTextCell *)cell
+{
+    NSIndexPath *index = [self.InfotableView indexPathForCell:cell];
+    [self.placeHolderArray replaceObjectAtIndex:index.row withObject:change];
+    if (index.row == 0) {
+        [self.parameters setObject:change forKey:@"uasuDate"];
+        
+    }
+    if (index.row == 1) {
+        [self.parameters setObject:change forKey:@"uasuNum"];
+    }
+    if (index.row == 2) {
+        [self.parameters setObject:change forKey:@"uasuName"];
+    }
+    if (index.row == 3) {
+        [self.parameters setObject:change forKey:@"uasuPhone"];
+    }
+    if (index.row == 4) {
+        [self.parameters setObject:change forKey:@"uasuComName"];
+    }
+}
+
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

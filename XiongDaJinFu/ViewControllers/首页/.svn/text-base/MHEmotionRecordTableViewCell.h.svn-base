@@ -1,0 +1,27 @@
+//
+//  MHEmotionRecordTableViewCell.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/10.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+
+@protocol editBtnDelegateDelegate <NSObject>
+
+- (void)editBtnClick;
+
+@end
+
+@interface MHEmotionRecordTableViewCell : UITableViewCell
+@property (strong, nonatomic) IBOutlet UILabel *todayLabel;
+@property (strong, nonatomic) IBOutlet UILabel *emotionLabel;
+
+@property (strong, nonatomic) IBOutlet UIButton *emotionImageBtn;
+@property  (nonatomic,weak)id<editBtnDelegateDelegate>delegate;
+
++ (instancetype)MHEmotionRecordWithTableView:(UITableView *)tableView;
+
+@end

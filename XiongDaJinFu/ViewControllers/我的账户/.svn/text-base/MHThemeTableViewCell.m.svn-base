@@ -1,0 +1,33 @@
+//
+//  MHThemeTableViewCell.m
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/9.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import "MHThemeTableViewCell.h"
+
+@implementation MHThemeTableViewCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+//    self.mainImageView.layer.borderWidth = 1;
+//    self.mainImageView.layer.borderColor = [[UIColor lightGrayColor]CGColor];
+    self.mainImageView.clipsToBounds = YES;
+}
+-(void)setMODEL:(MHExamThemeList *)MODEL{
+
+    self.backgroundColor = [UIColor colorWithHexString:@"#eff3f6"];
+    [self.mainImageView sd_setImageWithURL:[NSURL URLWithString:MODEL.etLogoUrl] placeholderImage:nil];
+    
+    self.DescLabel.text = MODEL.etDesc;
+    //self.etNameLabel.text = MODEL.etName;
+}
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

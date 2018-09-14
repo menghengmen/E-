@@ -1,0 +1,19 @@
+//
+//  MHHistoryRecordTableViewCell.h
+//  XiongDaJinFu
+//
+//  Created by 哈哈 on 2017/7/16.
+//  Copyright © 2017年 digirun. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "MHExamHistoryList.h"
+@interface MHHistoryRecordTableViewCell : UITableViewCell
+@property (strong, nonatomic) IBOutlet UIImageView *mainImageView;
+@property (strong, nonatomic) IBOutlet UILabel *epValDescLabel;
+@property (strong, nonatomic) IBOutlet UILabel *etNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *epNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *epNumberLabel;
+@property   (nonatomic,strong)   MHExamHistoryList  * model;
+
+@end
